@@ -1,0 +1,5 @@
+.profile__info-row {
+  display: flex;
+  column-gap: 18px;
+  padding-bottom: 16px;
+}

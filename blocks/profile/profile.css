@@ -4,3 +4,11 @@
   column-gap: 30px;
   align-items: center;
 }
+
+@media screen and (max-width: 959px) {
+  .profile {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}

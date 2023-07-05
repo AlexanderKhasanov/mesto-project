@@ -4,9 +4,27 @@
   font-size: 42px;
   line-height: 48px;
   font-weight: 500;
-  grid-area: name;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
   max-width: calc(550px - (18px + 24px));
+  vertical-align: bottom;
+}
+
+@media screen and (max-width: 959px) {
+  .profile__name {
+    font-size: 27px;
+    line-height: 1.21;
+    text-align: center;
+    max-width: calc(574px - (10px + 18px));
+  }
+}
+
+@media screen and (max-width: 599px) {
+  .profile__name {
+    font-size: 27px;
+    line-height: 1.21;
+    text-align: center;
+    max-width: calc(282px - (10px + 18px));
+  }
 }

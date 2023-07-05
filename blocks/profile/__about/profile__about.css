@@ -4,9 +4,16 @@
   font-size: 18px;
   font-weight: 400;
   line-height: 1.21;
-  grid-area: about;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  max-width: 550px;
+  width: 100%;
+}
+
+@media screen and (max-width: 959px) {
+  .profile__about {
+    font-size: 14px;
+    line-height: 1.21;
+    text-align: center;
+  }
 }

@@ -2,3 +2,17 @@
   color: #fff;
   max-width: 550px;
 }
+
+@media screen and (max-width: 959px) {
+  .profile__info {
+    padding-bottom: 36px;
+    max-width: 574px;
+  }
+}
+
+@media screen and (max-width: 599px) {
+  .profile__info {
+    padding-bottom: 36px;
+    max-width: 282px;
+  }
+}

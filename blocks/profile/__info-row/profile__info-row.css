@@ -2,4 +2,12 @@
   display: flex;
   column-gap: 18px;
   padding-bottom: 16px;
+  align-items: baseline;
+}
+
+@media screen and (max-width: 959px) {
+  .profile__info-row {
+    column-gap: 10px;
+    padding-bottom: 14px;
+  }
 }

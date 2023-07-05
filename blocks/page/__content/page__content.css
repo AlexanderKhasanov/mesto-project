@@ -1,3 +1,9 @@
 .page__content {
   padding: 50px 0 66px;
 }
+
+@media screen and (max-width: 959px) {
+  .page__content {
+    padding: 36px 0 48px;
+  }
+}

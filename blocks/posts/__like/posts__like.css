@@ -1,9 +1,10 @@
 .posts__like {
   margin: 0 20px 0;
   padding: 0;
-  width: 22px;
+  display: block;
+  min-width: 22px;
   height: 19px;
-  background: url(../../../images/post_like.svg) transparent center no-repeat;
+  background: url(../../../images/post_like-btn.svg) transparent center no-repeat;
   border: 0;
   cursor: pointer;
   opacity: 1;

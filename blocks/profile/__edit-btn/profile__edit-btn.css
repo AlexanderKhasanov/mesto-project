@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   background: url(../../../images/profile_edit-btn.svg) transparent center no-repeat;
-  width: 24px;
+  min-width: 24px;
   height: 24px;
   border: 1px solid #fff;
   cursor: pointer;

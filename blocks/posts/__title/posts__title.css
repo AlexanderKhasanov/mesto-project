@@ -8,5 +8,4 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  max-width: calc(282px - 22px - (21px + 20px + 20px));
 }

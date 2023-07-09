@@ -29,5 +29,6 @@
   .form__send-btn {
     font-size: 14px;
     margin-top: 45px;
+    height: 46px;
   }
 }

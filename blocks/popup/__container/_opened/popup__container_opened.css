@@ -1,0 +1,4 @@
+.popup__container_opened {
+  transform: translateY(0);
+  transition: transform .5s ease;
+}

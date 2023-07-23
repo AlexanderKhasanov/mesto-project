@@ -6,6 +6,8 @@
   position: relative;
   border-radius: 10px;
   box-sizing: border-box;
+  transform: translateY(-100%);
+  transition: transform .5s ease;
 }
 
 @media screen and (max-width: 599px) {

@@ -1,5 +1,5 @@
 .popup__close-btn {
-  background: url(../../../images/popup_close-btn.svg) transparent center no-repeat;
+  background: url(../../../images/popup_close-btn_desktop.svg) transparent center no-repeat;
   min-width: 32px;
   height: 32px;
   position: absolute;
@@ -17,6 +17,7 @@
 
 @media screen and (max-width: 599px) {
   .popup__close-btn {
+    background-image: url(../../../images/popup_close-btn_mobile.svg);
     min-width: 20px;
     height: 20px;
     top: -36px;

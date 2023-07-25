@@ -1,11 +1,13 @@
 const page = document.querySelector('.page');
 const profile = page.querySelector('.profile');
-const profileEditBtn = profile.querySelector('.profile__edit-btn');
 const popup = page.querySelector('.popup');
 const popupContainer = popup.querySelector('.popup__container');
 const formProfileInfo = popupContainer.querySelector('.form');
-const popupCloseBtn = popupContainer.querySelector('.popup__close-btn');
 const postContainer = page.querySelector('.posts__posts-list');
+
+const profileEditBtn = profile.querySelector('.profile__edit-btn');
+const popupCloseBtn = popupContainer.querySelector('.popup__close-btn');
+const addPostBtn = profile.querySelector('.profile__add-btn');
 
 const initialCards = [
   {
@@ -75,4 +77,5 @@ showPosts();
 profileEditBtn.addEventListener('click', showPopup);
 popupCloseBtn.addEventListener('click', closePopup);
 formProfileInfo.addEventListener('submit', saveProfileInfo);
+addPostBtn.addEventListener('click', showPopup);
 

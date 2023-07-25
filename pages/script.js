@@ -1,48 +1,9 @@
-const page = document.querySelector('.page');
-const profile = page.querySelector('.profile');
-const popup = page.querySelector('.popup');
-const popupContainer = popup.querySelector('.popup__container');
-const formProfileInfo = popupContainer.querySelector('.form');
-const postContainer = page.querySelector('.posts__posts-list');
-
-const profileEditBtn = profile.querySelector('.profile__edit-btn');
-const popupCloseBtn = popupContainer.querySelector('.popup__close-btn');
-const addPostBtn = profile.querySelector('.profile__add-btn');
-
-const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
-
 class Form {
   constructor (name) {
     this.name = name;
     this.templateForm = document.createElement('form');
     this.templateForm.classList.add('form');
     this.templateForm.name = name;
-    console.log(this.templateForm);
   }
 
   createTitle(title) {
@@ -70,14 +31,14 @@ class Form {
       inputElement.classList.add('form__item')
       inputElement.type = 'text';
       inputElement.name = name;
-      inputElement.placeholders = placeholders[index];
+      inputElement.placeholder = placeholders[index];
       fieldSetElement.append(inputElement);
     });
 
     this.templateForm.append(fieldSetElement);
   }
 
-  createButton(name, text){
+  createButton(name, text, handle){
     const buttonElement = document.createElement('button');
     buttonElement.classList.add('form__send-btn');
     buttonElement.type = 'submit';
@@ -86,18 +47,68 @@ class Form {
     buttonElement.textContent = text;
 
     this.templateForm.append(buttonElement);
+    this.templateForm.addEventListener('submit', handle);
   }
 }
 
-//const formTemplate = page.querySelector('#form-template').content;
+const page = document.querySelector('.page');
+const profile = page.querySelector('.profile');
 
-function setUserInfo(form) {
-  console.log('setUserInfo');
-  form.username.value = profile.querySelector('.profile__name').textContent.trim();
-  form.user_info.value = profile.querySelector('.profile__about').textContent.trim();
+const popup = page.querySelector('.popup');
+const popupContainer = popup.querySelector('.popup__container');
+
+const postContainer = page.querySelector('.posts__posts-list');
+const postTemplate = page.querySelector('#post-template').content;
+
+const profileEditBtn = profile.querySelector('.profile__edit-btn');
+const popupCloseBtn = popupContainer.querySelector('.popup__close-btn');
+const addPostBtn = profile.querySelector('.profile__add-btn');
+
+const profileForm = getProfileForm();
+const addPostForm = getPostForm();
+
+const initialCards = [
+  {
+    name: 'Архыз',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
+  },
+  {
+    name: 'Челябинская область',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
+  },
+  {
+    name: 'Иваново',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
+  },
+  {
+    name: 'Камчатка',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
+  },
+  {
+    name: 'Холмогорский район',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
+  },
+  {
+    name: 'Байкал',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
+  }
+].forEach( post => {
+  createPost(post.name, post.link)
+});
+
+
+function saveProfileInfo(evt) {
+  evt.preventDefault();
+  profile.querySelector('.profile__name').textContent = profileForm.username.value;
+  profile.querySelector('.profile__about').textContent = profileForm.user_info.value;
+  closePopup();
 }
 
-function getFromInput(){}
+function addPost(evt) {
+  evt.preventDefault();
+  createPost(addPostForm.post_name.value, addPostForm.post_url.value);
+  closePopup();
+}
 
 function getProfileForm() {
   const profileForm = new Form('profile');
@@ -107,34 +118,42 @@ function getProfileForm() {
     ['username', 'user_info'],
     ['Ваше имя', 'Пару слов о себе']
   );
-  profileForm.createButton('save', 'Сохранить');
+  profileForm.createButton('save', 'Сохранить', saveProfileInfo);
   return profileForm.templateForm;
 }
 
 function getPostForm() {
+  const addPostForm = new Form('add_post');
+
+  addPostForm.createTitle('Новое место');
+  addPostForm.createInput(
+    ['post_name', 'post_url'],
+    ['Укажите название места', 'Укажите ссылку на фотографию этого места']
+  );
+  addPostForm.createButton('save', 'Добавить', addPost);
+  return addPostForm.templateForm;
 }
 
-const profileForm = getProfileForm();
-
-//popup.querySelector('.popup__container').innerHTML = profileForm.outerHTML;
+function setUserInfo(form) {
+  form.username.setAttribute('value', profile.querySelector('.profile__name').textContent.trim());
+  form.user_info.value = profile.querySelector('.profile__about').textContent.trim();
+}
 
 function showPopup(evt) {
-  console.log(evt.target);
-
   const popupContent = popup.querySelector('.popup__container .popup__content');
-  console.log(popupContent);
   switch (evt.target.name){
     case 'edit_profile':
-      console.log('edit_profile');
-      /*
-      const form = container.querySelector('.form');
-      if (form !== profileForm){
-        console.log('new form');
-        container.append(profileForm);
-        setUserInfo(form);
-      }*/
+      if (!popupContent.contains(profileForm)){
+        popupContent.childNodes.forEach(item => item.remove());
+        popupContent.append(profileForm);
+      }
       setUserInfo(profileForm);
-      popupContent.innerHTML = profileForm.outerHTML;
+      break;
+    case 'add_content':
+      if (!popupContent.contains(addPostForm)){
+        popupContent.childNodes.forEach(item => item.remove());
+        popupContent.append(addPostForm);
+      }
       break;
   }
 
@@ -147,31 +166,18 @@ function closePopup() {
   popupContainer.classList.remove('popup__container_opened');
 }
 
-function saveProfileInfo(evt) {
-  evt.preventDefault();
-  profile.querySelector('.profile__name').textContent = formProfileInfo.username.value;
-  profile.querySelector('.profile__about').textContent = formProfileInfo.user_info.value;
-  closePopup();
+function createPost(name, link) {
+  const postElement = postTemplate.querySelector('.posts__item').cloneNode(true);
+  const postImg = postElement.querySelector('.posts__image');
+  postImg.src = link;
+  postImg.alt = `Фотография поста. ${link}`;
+  postElement.querySelector('.posts__title').textContent = name;
+  postContainer.prepend(postElement);
 }
 
-function showPosts() {
-  const postTemplate = page.querySelector('#post-template').content;
+initialCards
 
-  initialCards.forEach( post => {
-    const postElement = postTemplate.querySelector('.posts__item').cloneNode(true);
-    const postImg = postElement.querySelector('.posts__image');
-    postImg.src = post.link;
-    postImg.alt = `Фотография поста. ${post.name}`;
-    postElement.querySelector('.posts__title').textContent = post.name;
-    postContainer.prepend(postElement);
-  });
-}
-
-showPosts();
-/*
-const t = page.querySelector('#form-template').content;
-const t_clone = t.querySelector('.form').cloneNode(true);
-console.log(t_clone);*/
+//showPosts();
 
 profileEditBtn.addEventListener('click', showPopup);
 popupCloseBtn.addEventListener('click', closePopup);

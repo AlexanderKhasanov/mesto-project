@@ -66,21 +66,27 @@
 
   <template id="post-template">
     <li class="posts__item">
-      <article class="posts__card">
+      <article class="post">
         <img
           src="#"
           alt="Фотография поста."
-          class="posts__image"
+          class="post__image"
         >
-        <div class="posts__info">
-          <h2 class="posts__title"></h2>
+        <div class="post__info">
+          <h2 class="post__title"></h2>
           <button
             type="button"
             name="like_photo"
             value="like"
-            class="posts__like"
+            class="post__like"
           ></button>
         </div>
+        <button
+          type="button"
+          name="delete_photo"
+          value="delete"
+          class="post__delete"
+        ></button>
       </article>
     </li>
   </template>

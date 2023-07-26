@@ -168,10 +168,16 @@ function closePopup() {
 
 function createPost(name, link) {
   const postElement = postTemplate.querySelector('.posts__item').cloneNode(true);
-  const postImg = postElement.querySelector('.posts__image');
+  const postImg = postElement.querySelector('.post__image');
   postImg.src = link;
   postImg.alt = `Фотография поста. ${link}`;
-  postElement.querySelector('.posts__title').textContent = name;
+  postElement.querySelector('.post__title').textContent = name;
+  postElement.querySelector('.post__like').addEventListener(
+    'click', (evt) => {evt.target.classList.toggle('post__like_active')}
+  );
+  postElement.querySelector('.post__delete').addEventListener(
+    'click', (evt) => evt.target.parentElement.remove()
+  );
   postContainer.prepend(postElement);
 }
 

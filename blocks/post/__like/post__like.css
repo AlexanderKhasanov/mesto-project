@@ -1,4 +1,4 @@
-.posts__like {
+.post__like {
   margin: 0 20px 0;
   padding: 0;
   display: block;
@@ -11,6 +11,6 @@
   transition: opacity .3s;
 }
 
-.posts__like:hover {
+.post__like:hover {
   opacity: .5;
 }

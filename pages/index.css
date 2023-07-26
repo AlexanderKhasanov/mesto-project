@@ -21,12 +21,14 @@
 @import url(../blocks/posts/posts.css);
 @import url(../blocks/posts/__posts-list/posts__posts-list.css);
 @import url(../blocks/posts/__item/posts__item.css);
-@import url(../blocks/posts/__card/posts__card.css);
-@import url(../blocks/posts/__image/posts__image.css);
-@import url(../blocks/posts/__info/posts__info.css);
-@import url(../blocks/posts/__title/posts__title.css);
-@import url(../blocks/posts/__like/posts__like.css);
-@import url(../blocks/posts/__like/_active/posts__like_active.css);
+
+@import url(../blocks/post/post.css);
+@import url(../blocks/post/__image/post__image.css);
+@import url(../blocks/post/__info/post__info.css);
+@import url(../blocks/post/__title/post__title.css);
+@import url(../blocks/post/__like/post__like.css);
+@import url(../blocks/post/__like/_active/post__like_active.css);
+@import url(../blocks/post/__delete/post__delete.css);
 
 @import url(../blocks/footer/footer.css);
 @import url(../blocks/footer/__copyright/footer__copyright.css);

@@ -176,8 +176,8 @@ function createPost(name, link) {
     'click', (evt) => {evt.target.classList.toggle('post__like_active')}
   );
   postElement.querySelector('.post__delete').addEventListener(
-    'click', (evt) => evt.target.parentElement.remove()
-  );
+    'click', evt => evt.target.closest('.posts__item').remove()
+    );
   postContainer.prepend(postElement);
 }
 

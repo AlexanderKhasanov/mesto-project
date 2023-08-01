@@ -52,15 +52,90 @@
     </p>
   </footer>
 
-  <div class="popup">
-    <div class="popup__container">
+  <div class="popup" id="popup_type_edit-profile">
+    <div class="popup__container popup__container_type_info">
       <button
       type="button"
       name="close_popup"
       value="close-btn"
       class="popup__close-btn"
       ></button>
-      <div class="popup__content"></div>
+      <form name="profile_info" class="form">
+        <h2 class="form__title">Редактировать профиль</h2>
+        <fieldset class="form__input-container">
+          <input
+            type="text"
+            name="username"
+            value=""
+            placeholder=""
+            class="form__item"
+          >
+          <input
+            type="text"
+            name="user_info"
+            value=""
+            placeholder="Пару слов о себе"
+            class="form__item"
+          >
+        </fieldset>
+        <button
+          type="submit"
+          name="save_info"
+          value="save-profile-btn"
+          class="form__send-btn"
+        >Сохранить</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="popup" id="popup_type_add-post">
+    <div class="popup__container popup__container_type_info">
+      <button
+      type="button"
+      name="close_popup"
+      value="close-btn"
+      class="popup__close-btn"
+      ></button>
+      <form name="profile_info" class="form">
+        <h2 class="form__title">Новое место</h2>
+        <fieldset class="form__input-container">
+          <input
+            type="text"
+            name="post_name"
+            value=""
+            placeholder="Укажите название места"
+            class="form__item"
+          >
+          <input
+            type="text"
+            name="post_url"
+            value=""
+            placeholder="Укажите ссылку на фотографию этого места"
+            class="form__item"
+          >
+        </fieldset>
+        <button
+          type="submit"
+          name="save_info"
+          value="add-post-btn"
+          class="form__send-btn"
+        >Добавить</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="popup" id="popup_type_focus-img">
+    <div class="popup__container popup__container_type_focus-img">
+      <button
+      type="button"
+      name="close_popup"
+      value="close-btn"
+      class="popup__close-btn"
+      ></button>
+      <figure class="focus-img">
+        <img src="#" alt="Фотография поста" class="focus-img__image">
+        <figcaption class="focus-img__caption"></figcaption>
+      </figure>
     </div>
   </div>
 

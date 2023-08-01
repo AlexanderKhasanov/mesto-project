@@ -52,6 +52,32 @@ class Form {
   }
 }
 
+// Создание формы для изменения информации о пользователе
+function getProfileForm() {
+  const profileForm = new Form('profile');
+
+  profileForm.createTitle('Редактировать профиль');
+  profileForm.createInput(
+    ['username', 'user_info'],
+    ['Ваше имя', 'Пару слов о себе']
+  );
+  profileForm.createButton('save', 'Сохранить', saveProfileInfo);
+  return profileForm.templateForm;
+}
+
+// Создание формы для добавления поста
+function getPostForm() {
+  const addPostForm = new Form('add_post');
+
+  addPostForm.createTitle('Новое место');
+  addPostForm.createInput(
+    ['post_name', 'post_url'],
+    ['Укажите название места', 'Укажите ссылку на фотографию этого места']
+  );
+  addPostForm.createButton('save', 'Добавить', addPost);
+  return addPostForm.templateForm;
+}
+
 const page = document.querySelector('.page');
 const profile = page.querySelector('.profile');
 
@@ -111,33 +137,6 @@ function addPost(evt) {
   evt.preventDefault();
   createPost(addPostForm.post_name.value, addPostForm.post_url.value);
   closePopup();
-}
-
-
-// Создание формы для изменения информации о пользователе
-function getProfileForm() {
-  const profileForm = new Form('profile');
-
-  profileForm.createTitle('Редактировать профиль');
-  profileForm.createInput(
-    ['username', 'user_info'],
-    ['Ваше имя', 'Пару слов о себе']
-  );
-  profileForm.createButton('save', 'Сохранить', saveProfileInfo);
-  return profileForm.templateForm;
-}
-
-// Создание формы для добавления поста
-function getPostForm() {
-  const addPostForm = new Form('add_post');
-
-  addPostForm.createTitle('Новое место');
-  addPostForm.createInput(
-    ['post_name', 'post_url'],
-    ['Укажите название места', 'Укажите ссылку на фотографию этого места']
-  );
-  addPostForm.createButton('save', 'Добавить', addPost);
-  return addPostForm.templateForm;
 }
 
 // Заполнение формы для изменения информации о пользователе
@@ -224,10 +223,12 @@ function focusImagePopup(evt) {
 // Создание поста
 function createPost(name, link) {
   const postElement = postTemplate.querySelector('.posts__item').cloneNode(true);
+
   const postImg = postElement.querySelector('.post__image');
   postImg.src = link;
   postImg.alt = `Фотография поста. ${link}`;
   postImg.addEventListener('click', focusImagePopup);
+
   postElement.querySelector('.post__title').textContent = name;
   postElement.querySelector('.post__like').addEventListener(
     'click', (evt) => {evt.target.classList.toggle('post__like_active')}
@@ -235,6 +236,7 @@ function createPost(name, link) {
   postElement.querySelector('.post__delete').addEventListener(
     'click', evt => evt.target.closest('.posts__item').remove()
     );
+
   postContainer.prepend(postElement);
 }
 

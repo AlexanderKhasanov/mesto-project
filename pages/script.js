@@ -142,8 +142,14 @@ function addPost(evt) {
 // Заполнение формы для изменения информации о пользователе
 // текущей информацией
 function setUserInfo(form) {
-  form.username.setAttribute('value', profile.querySelector('.profile__name').textContent.trim());
+  //form.username.setAttribute('value', profile.querySelector('.profile__name').textContent.trim());
+  form.username.value = profile.querySelector('.profile__name').textContent.trim();
   form.user_info.value = profile.querySelector('.profile__about').textContent.trim();
+}
+
+function cleanAddPostForm(form) {
+  form.post_name.value = '';
+  form.post_url.value = '';
 }
 
 // Открытие модального окна с формами
@@ -164,6 +170,7 @@ function showInfoPopup(evt) {
         popupContent.childNodes.forEach(item => item.remove());
         popupContent.append(addPostForm);
       }
+      cleanAddPostForm(addPostForm);
       break;
   }
 

@@ -1,18 +1,6 @@
 .popup__container {
-  padding: 34px 36px 37px;
-  background-color: #fff;
-  max-width: 430px;
-  width: 100%;
   position: relative;
-  border-radius: 10px;
   box-sizing: border-box;
   transform: translateY(-100%);
   transition: transform .5s ease;
-}
-
-@media screen and (max-width: 599px) {
-  .popup__container {
-    padding: 25px 22px ;
-    max-width: 282px;
-  }
 }

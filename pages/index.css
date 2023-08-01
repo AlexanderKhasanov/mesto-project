@@ -34,13 +34,20 @@
 @import url(../blocks/footer/__copyright/footer__copyright.css);
 
 @import url(../blocks/popup/popup.css);
+@import url(../blocks/popup/_type/popup_type_focus.css);
 @import url(../blocks/popup/__container/popup__container.css);
 @import url(../blocks/popup/__close-btn/popup__close-btn.css);
 @import url(../blocks/popup/_opened/popup_opened.css);
 @import url(../blocks/popup/__container/_opened/popup__container_opened.css);
+@import url(../blocks/popup/__container/_type/popup__container_type_info.css);
+@import url(../blocks/popup/__container/_type/popup__container_type_focus.css);
 
 @import url(../blocks/form/form.css);
 @import url(../blocks/form/__title/form__title.css);
 @import url(../blocks/form/__input-container.css/form__input-container.css);
 @import url(../blocks/form/__item/form__item.css);
 @import url(../blocks/form/__send-btn/form__send-btn.css);
+
+@import url(../blocks/focus-img/focus-img.css);
+@import url(../blocks/focus-img/__image/focus-img__image.css);
+@import url(../blocks/focus-img/__caption/focus-img__caption.css);

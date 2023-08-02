@@ -59,6 +59,12 @@ function setUserInfo(form) {
   form.user_info.value = profile.querySelector('.profile__about').textContent.trim();
 }
 
+// Очистка формы добавления поста
+function cleanAddPostForm(form) {
+  form.post_name.value = '';
+  form.post_url.value = '';
+}
+
 // Открытие модального окна
 function openPopup(popup) {
   popup.classList.add('popup_opened');
@@ -73,6 +79,7 @@ function openPopupEditProfile() {
 
 // Открытие модального окна добавления поста
 function openPopupAddPost() {
+  cleanAddPostForm(popupAddPost.querySelector('.form'));
   openPopup(popupAddPost);
 }
 

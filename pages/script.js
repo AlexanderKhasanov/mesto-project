@@ -1,15 +1,20 @@
 const page = document.querySelector('.page');
 const profile = page.querySelector('.profile');
+const profileName = profile.querySelector('.profile__name');
+const profileAbout = profile.querySelector('.profile__about');
 
 const popupEditProfile = page.querySelector('#popup_type_edit-profile');
+const formEditProfile = popupEditProfile.querySelector('.form');
 const btnClosePopupEditProfile = popupEditProfile.querySelector('.popup__close-btn');
 const btnSubmitEditProfileForm = popupEditProfile.querySelector('.form__send-btn');
 
 const popupAddPost = page.querySelector('#popup_type_add-post');
+const formAddPost = popupAddPost.querySelector('.form');
 const btnClosePopupAddPost = popupAddPost.querySelector('.popup__close-btn');
 const btnSubmitAddPostForm = popupAddPost.querySelector('.form__send-btn');
 
 const popupFocusImage = page.querySelector('#popup_type_focus-img');
+const focusImage = popupFocusImage.querySelector('.focus-img__image');
 const btnClosePopupFocusImage = popupFocusImage.querySelector('.popup__close-btn');
 
 const postContainer = page.querySelector('.posts__posts-list');
@@ -54,9 +59,8 @@ const initialCards = [
 // Заполнение формы для изменения информации о пользователе
 // текущей информацией
 function setUserInfo(form) {
-  //form.username.setAttribute('value', profile.querySelector('.profile__name').textContent.trim());
-  form.username.value = profile.querySelector('.profile__name').textContent.trim();
-  form.user_info.value = profile.querySelector('.profile__about').textContent.trim();
+  form.username.value = profileName.textContent.trim();
+  form.user_info.value = profileAbout.textContent.trim();
 }
 
 // Очистка формы добавления поста
@@ -68,24 +72,24 @@ function cleanAddPostForm(form) {
 // Открытие модального окна
 function openPopup(popup) {
   popup.classList.add('popup_opened');
-  popup.querySelector('.popup__container').classList.add('popup__container_opened');
 }
 
 // Открытие модального окна изменения профиля
 function openPopupEditProfile() {
-  setUserInfo(popupEditProfile.querySelector('.form'));
+  setUserInfo(formEditProfile);
   openPopup(popupEditProfile);
 }
 
 // Открытие модального окна добавления поста
 function openPopupAddPost() {
-  cleanAddPostForm(popupAddPost.querySelector('.form'));
+  cleanAddPostForm(formAddPost);
   openPopup(popupAddPost);
 }
 
 // Открытие модального окна с увеличенным изображением
 function openPopupFocusImage(evt) {
-  popupFocusImage.querySelector('.focus-img__image').src = evt.target.src;
+  focusImage.src = evt.target.src;
+  focusImage.alt = evt.target.alt;
   popupFocusImage.querySelector('.focus-img__caption').textContent = evt.target.closest('.post').querySelector('.post__title').textContent;
   openPopup(popupFocusImage);
 }
@@ -93,7 +97,6 @@ function openPopupFocusImage(evt) {
 // Закрытие модального окна
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
-  popup.querySelector('.popup__container').classList.remove('popup__container_opened');
 }
 
 // Закрытие модального окна изменения профиля
@@ -114,8 +117,8 @@ function closeFocusImagePopup() {
 function submitEditProfileForm(evt) {
   evt.preventDefault();
   const form = popupEditProfile.querySelector('.form');
-  profile.querySelector('.profile__name').textContent = form.username.value;
-  profile.querySelector('.profile__about').textContent = form.user_info.value;
+  profileName.textContent = form.username.value;
+  profileAbout.textContent = form.user_info.value;
   closePopupEditProfile();
 }
 
@@ -159,15 +162,3 @@ btnSubmitAddPostForm.addEventListener('click', addNewPost);
 btnClosePopupEditProfile.addEventListener('click', closePopupEditProfile);
 btnClosePopupAddPost.addEventListener('click', closePopupAddPost);
 btnClosePopupFocusImage.addEventListener('click', closeFocusImagePopup);
-// По нажатию клавиши  Esc
-document.addEventListener('keydown', (evt) => {
-  const popup = page.querySelector('.popup_opened');
-  if (evt.key === 'Escape' && popup)
-    closePopup(popup);
-});
-// По нажатию на область вне модального окна
-document.addEventListener('click', (evt) => {
-  const popup = page.querySelector('.popup_opened');
-  if (evt.target === popup)
-    closePopup(popup);
-});

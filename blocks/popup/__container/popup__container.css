@@ -1,6 +1,4 @@
 .popup__container {
   position: relative;
   box-sizing: border-box;
-  transform: translateY(-100%);
-  transition: transform .5s ease;
 }

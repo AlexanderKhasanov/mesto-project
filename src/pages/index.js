@@ -1,21 +1,20 @@
+import './index.css';
+
 const page = document.querySelector('.page');
 const profile = page.querySelector('.profile');
 const profileName = profile.querySelector('.profile__name');
 const profileAbout = profile.querySelector('.profile__about');
 
-const popupEditProfile = page.querySelector('#popup_type_edit-profile');
+const popupEditProfile = page.querySelector('#popup_edit-profile');
 const formEditProfile = popupEditProfile.querySelector('.form');
-const btnClosePopupEditProfile = popupEditProfile.querySelector('.popup__close-btn');
 const btnSubmitEditProfileForm = popupEditProfile.querySelector('.form__send-btn');
 
-const popupAddPost = page.querySelector('#popup_type_add-post');
+const popupAddPost = page.querySelector('#popup_add-post');
 const formAddPost = popupAddPost.querySelector('.form');
-const btnClosePopupAddPost = popupAddPost.querySelector('.popup__close-btn');
 const btnSubmitAddPostForm = popupAddPost.querySelector('.form__send-btn');
 
-const popupFocusImage = page.querySelector('#popup_type_focus-img');
+const popupFocusImage = page.querySelector('#popup_focus-img');
 const focusImage = popupFocusImage.querySelector('.focus-img__image');
-const btnClosePopupFocusImage = popupFocusImage.querySelector('.popup__close-btn');
 
 const postContainer = page.querySelector('.posts__posts-list');
 const postTemplate = page.querySelector('#post-template').content;
@@ -63,15 +62,18 @@ function setUserInfo(form) {
   form.user_info.value = profileAbout.textContent.trim();
 }
 
-// Очистка формы добавления поста
-function cleanAddPostForm(form) {
-  form.post_name.value = '';
-  form.post_url.value = '';
+// Закрытие модального окна по нажатию ESC
+function closePopupEsc(evt) {
+  const popup = page.querySelector('.popup_opened');
+  if (evt.key === 'Escape' && popup){
+    closePopup(popup);
+  }
 }
 
 // Открытие модального окна
 function openPopup(popup) {
   popup.classList.add('popup_opened');
+  setPopupEventListeners(popup);
 }
 
 // Открытие модального окна изменения профиля
@@ -82,7 +84,7 @@ function openPopupEditProfile() {
 
 // Открытие модального окна добавления поста
 function openPopupAddPost() {
-  cleanAddPostForm(formAddPost);
+  formAddPost.reset();
   openPopup(popupAddPost);
 }
 
@@ -97,6 +99,7 @@ function openPopupFocusImage(evt) {
 // Закрытие модального окна
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
+  deleteEventListener(popup);
 }
 
 // Закрытие модального окна изменения профиля
@@ -109,8 +112,24 @@ function closePopupAddPost() {
   closePopup(popupAddPost);
 }
 
-function closeFocusImagePopup() {
-  closePopup(popupFocusImage);
+// Закрытие модального окна по нажатию на оверлей или кнопку закрытия
+function closePopupClick(evt) {
+  const popup = page.querySelector('.popup_opened');
+  if (evt.target.classList.contains('popup') ||
+      evt.target.classList.contains('popup__close-btn'))
+    closePopup(popup);
+}
+
+// Установка слушателей для модальных окон
+function setPopupEventListeners(popup) {
+  document.addEventListener('keydown', closePopupEsc);
+  popup.addEventListener('click', closePopupClick)
+}
+
+// Удаление слушателей для модальных окон
+function deleteEventListener(popup) {
+  document.removeEventListener('keydown', closePopupEsc);
+  popup.removeEventListener('click', closePopupClick)
 }
 
 // Сохранение измененной информации о пользователе
@@ -157,8 +176,52 @@ btnAddPost.addEventListener('click', openPopupAddPost);
 btnSubmitEditProfileForm.addEventListener('click', submitEditProfileForm);
 btnSubmitAddPostForm.addEventListener('click', addNewPost);
 
-// Закрытие модальных окон
-// По нажатию на кнопку закрытия
-btnClosePopupEditProfile.addEventListener('click', closePopupEditProfile);
-btnClosePopupAddPost.addEventListener('click', closePopupAddPost);
-btnClosePopupFocusImage.addEventListener('click', closeFocusImagePopup);
+
+// Валидация форм
+function showInputError(form, inputElement, errorMessage, settingsForm) {
+  const errorElement = form.querySelector(`.${inputElement.id}-error`);
+  console.log(`input element - ${inputElement}`)
+  console.log(`error element - ${errorElement}`)
+  inputElement.classList.add(settingsForm.inputErrorClass);
+  errorElement.classList.add(settingsForm.errorClass);
+  errorElement.textContent = errorMessage;
+}
+
+function hideInputError(form, inputElement, settingsForm) {
+  const errorElement = form.querySelector(`.${inputElement.id}-error`);
+  inputElement.classList.remove(settingsForm.inputErrorClass);
+  errorElement.classList.remove(settingsForm.errorClass);
+  errorElement.textContent = '';
+}
+
+function checkInputValidity(form, inputElement, settingsForm) {
+  if (!inputElement.validity.valid)
+    showInputError(form, inputElement, inputElement.validationMessage, settingsForm);
+  else
+    hideInputError(form, inputElement, settingsForm);
+}
+
+const settings = {
+  formSelector: '.form',
+  inputSelector: '.form__item',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'form__item_type_error',
+  errorClass: 'form__item-error_active'
+}
+
+function setFormEventListeners(form, settingsForm) {
+  const inputList = Array.from(form.querySelectorAll(settingsForm.inputSelector));
+  inputList.forEach((inputElement) => {
+    inputElement.addEventListener('input', () => {
+      checkInputValidity(form, inputElement, settingsForm);
+    });
+  });
+}
+
+function enableValidation(settingsForms) {
+  const formList = Array.from(document.querySelectorAll(settingsForms.formSelector));
+  formList.forEach((form) => setFormEventListeners(form, settingsForms));
+}
+
+enableValidation(settings);

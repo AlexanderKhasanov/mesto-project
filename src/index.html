@@ -4,16 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Место</title>
-  <link rel="stylesheet" href="pages/index.css">
 </head>
 <body class="page">
   <header class="header page__header">
-    <img src="./images/logo.svg" alt="Логотип социальной сети &quot;Место&quot;" class="header__logo">
+    <img src="<%=require('./images/logo.svg')%>" alt="Логотип социальной сети &quot;Место&quot;" class="header__logo">
   </header>
   <main>
     <section class="profile">
       <img
-        src="./images/profile_avatar.jpg"
+        src="<%=require('./images/profile_avatar.jpg')%>"
         alt="Фотография установленная на аватарке пользователя"
         class="profile__avatar"
       >
@@ -52,7 +51,7 @@
     </p>
   </footer>
 
-  <div class="popup" id="popup_type_edit-profile">
+  <div class="popup" id="popup_edit-profile">
     <div class="popup__container popup__container_type_info">
       <button
       type="button"
@@ -60,23 +59,33 @@
       value="close-btn"
       class="popup__close-btn"
       ></button>
-      <form name="profile_info" class="form">
+      <form name="profile_info" class="form" novalidate>
         <h2 class="form__title">Редактировать профиль</h2>
         <fieldset class="form__input-container">
           <input
+            id="profile-name-input"
             type="text"
             name="username"
             value=""
             placeholder=""
             class="form__item"
+            minlength="2"
+            maxlength="40"
+            required
           >
+          <span class="profile-name-input-error form__item-error"></span>
           <input
+            id="profile-about-input"
             type="text"
             name="user_info"
             value=""
             placeholder="Пару слов о себе"
             class="form__item"
+            minlength="2"
+            maxlength="200"
+            required
           >
+          <span class="profile-about-input-error form__item-error"></span>
         </fieldset>
         <button
           type="submit"
@@ -88,7 +97,7 @@
     </div>
   </div>
 
-  <div class="popup" id="popup_type_add-post">
+  <div class="popup" id="popup_add-post">
     <div class="popup__container popup__container_type_info">
       <button
       type="button"
@@ -96,23 +105,31 @@
       value="close-btn"
       class="popup__close-btn"
       ></button>
-      <form name="profile_info" class="form">
+      <form name="profile_info" class="form" novalidate>
         <h2 class="form__title">Новое место</h2>
         <fieldset class="form__input-container">
           <input
+            id="add-post-name-input"
             type="text"
             name="post_name"
             value=""
             placeholder="Укажите название места"
             class="form__item"
+            minlength="2"
+            maxlength="30"
+            required
           >
+          <span class="add-post-name-input-error form__item-error"></span>
           <input
-            type="text"
+            id="add-post-url-input"
+            type="url"
             name="post_url"
             value=""
             placeholder="Укажите ссылку на фотографию этого места"
             class="form__item"
+            required
           >
+          <span class="add-post-url-input-error form__item-error"></span>
         </fieldset>
         <button
           type="submit"
@@ -124,7 +141,7 @@
     </div>
   </div>
 
-  <div class="popup" id="popup_type_focus-img">
+  <div class="popup popup_type_focus-img" id="popup_focus-img">
     <div class="popup__container popup__container_type_focus-img">
       <button
       type="button"
@@ -165,7 +182,5 @@
       </article>
     </li>
   </template>
-
-  <script src="pages/script.js"></script>
 </body>
 </html>

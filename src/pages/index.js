@@ -55,6 +55,15 @@ const initialCards = [
   );
 });
 
+const settingsForms = {
+  formSelector: '.form',
+  inputSelector: '.form__item',
+  submitButtonSelector: '.form__send-btn',
+  inactiveButtonClass: 'form__send-btn_disabled',
+  inputErrorClass: 'form__item_type_error',
+  errorClass: 'form__item-error_active'
+}
+
 // Заполнение формы для изменения информации о пользователе
 // текущей информацией
 function setUserInfo(form) {
@@ -78,13 +87,16 @@ function openPopup(popup) {
 
 // Открытие модального окна изменения профиля
 function openPopupEditProfile() {
+  resetForm(formEditProfile, settingsForms);
+  toggleButtonState(formEditProfile, btnSubmitEditProfileForm, settingsForms);
   setUserInfo(formEditProfile);
   openPopup(popupEditProfile);
 }
 
 // Открытие модального окна добавления поста
 function openPopupAddPost() {
-  formAddPost.reset();
+  resetForm(formAddPost, settingsForms);
+  toggleButtonState(formAddPost, btnSubmitAddPostForm, settingsForms);
   openPopup(popupAddPost);
 }
 
@@ -100,16 +112,6 @@ function openPopupFocusImage(evt) {
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
   deleteEventListener(popup);
-}
-
-// Закрытие модального окна изменения профиля
-function closePopupEditProfile() {
-  closePopup(popupEditProfile);
-}
-
-// Закрытие модального окна добавления поста
-function closePopupAddPost() {
-  closePopup(popupAddPost);
 }
 
 // Закрытие модального окна по нажатию на оверлей или кнопку закрытия
@@ -138,7 +140,7 @@ function submitEditProfileForm(evt) {
   const form = popupEditProfile.querySelector('.form');
   profileName.textContent = form.username.value;
   profileAbout.textContent = form.user_info.value;
-  closePopupEditProfile();
+  closePopup(popupEditProfile);
 }
 
 // Создание поста
@@ -165,7 +167,7 @@ function addNewPost(evt) {
   postContainer.prepend(
     createPost(form.post_name.value, form.post_url.value)
   );
-  closePopupAddPost();
+  closePopup(popupAddPost);
 }
 
 // Открытие модальных окон
@@ -176,7 +178,6 @@ btnAddPost.addEventListener('click', openPopupAddPost);
 btnSubmitEditProfileForm.addEventListener('click', submitEditProfileForm);
 btnSubmitAddPostForm.addEventListener('click', addNewPost);
 
-
 // Валидация форм
 function showInputError(form, inputElement, errorMessage, settingsForm) {
   const errorElement = form.querySelector(`.${inputElement.id}-error`);
@@ -185,6 +186,12 @@ function showInputError(form, inputElement, errorMessage, settingsForm) {
   inputElement.classList.add(settingsForm.inputErrorClass);
   errorElement.classList.add(settingsForm.errorClass);
   errorElement.textContent = errorMessage;
+}
+
+function resetForm(form, settings) {
+  form.reset();
+  const inputList = Array.from(form.querySelectorAll(settings.inputSelector));
+  inputList.forEach((inputElement) => hideInputError(form, inputElement, settings));
 }
 
 function hideInputError(form, inputElement, settingsForm) {
@@ -201,20 +208,25 @@ function checkInputValidity(form, inputElement, settingsForm) {
     hideInputError(form, inputElement, settingsForm);
 }
 
-const settings = {
-  formSelector: '.form',
-  inputSelector: '.form__item',
-  submitButtonSelector: '.popup__button',
-  inactiveButtonClass: 'popup__button_disabled',
-  inputErrorClass: 'form__item_type_error',
-  errorClass: 'form__item-error_active'
+function hasInvalidInput(inputList) {
+  return inputList.some((inputElement) => !inputElement.validity.valid);
+}
+
+function toggleButtonState(inputList, buttonElement, settingsForm) {
+  if (hasInvalidInput(inputList))
+    buttonElement.classList.add(settingsForm.inactiveButtonClass);
+  else
+    buttonElement.classList.remove(settingsForm.inactiveButtonClass);
 }
 
 function setFormEventListeners(form, settingsForm) {
   const inputList = Array.from(form.querySelectorAll(settingsForm.inputSelector));
+  const buttonElement = form.querySelector(settingsForm.submitButtonSelector);
+  toggleButtonState(inputList, buttonElement, settingsForm);
   inputList.forEach((inputElement) => {
     inputElement.addEventListener('input', () => {
       checkInputValidity(form, inputElement, settingsForm);
+      toggleButtonState(inputList, buttonElement, settingsForm);
     });
   });
 }
@@ -224,4 +236,4 @@ function enableValidation(settingsForms) {
   formList.forEach((form) => setFormEventListeners(form, settingsForms));
 }
 
-enableValidation(settings);
+enableValidation(settingsForms);

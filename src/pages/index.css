@@ -50,6 +50,7 @@
 @import url(../blocks/form/__item-error/form__item-error.css);
 @import url(../blocks/form/__item-error/_active/form__item-error_active.css);
 @import url(../blocks/form/__send-btn/form__send-btn.css);
+@import url(../blocks/form/__send-btn/_disabled/form__send-btn_disabled.css);
 
 @import url(../blocks/focus-img/focus-img.css);
 @import url(../blocks/focus-img/__image/focus-img__image.css);

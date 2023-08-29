@@ -1,5 +1,14 @@
 import './index.css';
 
+const settingsForms = {
+  formSelector: '.form',
+  inputSelector: '.form__item',
+  submitButtonSelector: '.form__send-btn',
+  inactiveButtonClass: 'form__send-btn_disabled',
+  inputErrorClass: 'form__item_type_error',
+  errorClass: 'form__item-error_active'
+}
+
 const page = document.querySelector('.page');
 const profile = page.querySelector('.profile');
 const profileName = profile.querySelector('.profile__name');
@@ -8,10 +17,12 @@ const profileAbout = profile.querySelector('.profile__about');
 const popupEditProfile = page.querySelector('#popup_edit-profile');
 const formEditProfile = popupEditProfile.querySelector('.form');
 const btnSubmitEditProfileForm = popupEditProfile.querySelector('.form__send-btn');
+const inputEditProfile = Array.from(formEditProfile.querySelectorAll(settingsForms.inputSelector));
 
 const popupAddPost = page.querySelector('#popup_add-post');
 const formAddPost = popupAddPost.querySelector('.form');
 const btnSubmitAddPostForm = popupAddPost.querySelector('.form__send-btn');
+const inputListAddPost = Array.from(formAddPost.querySelectorAll(settingsForms.inputSelector));
 
 const popupFocusImage = page.querySelector('#popup_focus-img');
 const focusImage = popupFocusImage.querySelector('.focus-img__image');
@@ -55,15 +66,6 @@ const initialCards = [
   );
 });
 
-const settingsForms = {
-  formSelector: '.form',
-  inputSelector: '.form__item',
-  submitButtonSelector: '.form__send-btn',
-  inactiveButtonClass: 'form__send-btn_disabled',
-  inputErrorClass: 'form__item_type_error',
-  errorClass: 'form__item-error_active'
-}
-
 // Заполнение формы для изменения информации о пользователе
 // текущей информацией
 function setUserInfo(form) {
@@ -88,7 +90,7 @@ function openPopup(popup) {
 // Открытие модального окна изменения профиля
 function openPopupEditProfile() {
   resetForm(formEditProfile, settingsForms);
-  toggleButtonState(formEditProfile, btnSubmitEditProfileForm, settingsForms);
+  toggleButtonState(inputEditProfile, btnSubmitEditProfileForm, settingsForms);
   setUserInfo(formEditProfile);
   openPopup(popupEditProfile);
 }
@@ -96,7 +98,7 @@ function openPopupEditProfile() {
 // Открытие модального окна добавления поста
 function openPopupAddPost() {
   resetForm(formAddPost, settingsForms);
-  toggleButtonState(formAddPost, btnSubmitAddPostForm, settingsForms);
+  toggleButtonState(inputListAddPost, btnSubmitAddPostForm, settingsForms);
   openPopup(popupAddPost);
 }
 
@@ -156,7 +158,7 @@ function createPost(name, link) {
   );
   newPost.querySelector('.post__delete').addEventListener(
     'click', evt => evt.target.closest('.posts__item').remove()
-    );
+  );
   return newPost;
 }
 
@@ -177,6 +179,11 @@ btnAddPost.addEventListener('click', openPopupAddPost);
 // Отправка форм
 btnSubmitEditProfileForm.addEventListener('click', submitEditProfileForm);
 btnSubmitAddPostForm.addEventListener('click', addNewPost);
+
+
+
+
+
 
 // Валидация форм
 function showInputError(form, inputElement, errorMessage, settingsForm) {
@@ -202,6 +209,11 @@ function hideInputError(form, inputElement, settingsForm) {
 }
 
 function checkInputValidity(form, inputElement, settingsForm) {
+  if (inputElement.validity.patternMismatch)
+    inputElement.setCustomValidity(inputElement.dataset.errorMessage);
+  else
+    inputElement.setCustomValidity('');
+
   if (!inputElement.validity.valid)
     showInputError(form, inputElement, inputElement.validationMessage, settingsForm);
   else

@@ -1,6 +1,4 @@
 export const Utils = (function() {
-
-
   function showInputError(form, inputElement, errorMessage, settingsForm) {
     const errorElement = form.querySelector(`.${inputElement.id}-error`);
     inputElement.classList.add(settingsForm.inputErrorClass);
@@ -20,10 +18,14 @@ export const Utils = (function() {
   }
 
   function toggleButtonState(inputList, buttonElement, settingsForm) {
-    if (hasInvalidInput(inputList))
+    if (hasInvalidInput(inputList)) {
       buttonElement.classList.add(settingsForm.inactiveButtonClass);
-    else
+      buttonElement.disabled = true;
+    } else {
       buttonElement.classList.remove(settingsForm.inactiveButtonClass);
+      buttonElement.disabled = false;
+    }
+
   }
 
   function resetForm (form, settingsForm) {

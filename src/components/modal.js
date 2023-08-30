@@ -32,8 +32,8 @@ export const Modal = (function(){
 
   // Закрытие модального окна по нажатию ESC
   function closePopupEsc(evt) {
-    const popup = Variables.page.querySelector('.popup_opened');
-    if (evt.key === 'Escape' && popup){
+    if (evt.key === 'Escape'){
+      const popup = Variables.page.querySelector('.popup_opened');
       closePopup(popup);
     }
   }

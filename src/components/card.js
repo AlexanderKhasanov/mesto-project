@@ -39,7 +39,6 @@ export const Card = (function () {
   }
 
   function setPostsListeners(evt) {
-    console.log(evt.target.classList.contains('post__image'));
     if (evt.target.classList.contains('post__like'))
       likePost(evt);
     if (evt.target.classList.contains('post__delete'))

@@ -12,15 +12,13 @@
   <main>
     <section class="profile">
       <img
-        src="<%=require('./images/profile_avatar.jpg')%>"
+        src="#"
         alt="Фотография установленная на аватарке пользователя"
         class="profile__avatar"
       >
       <div class="profile__info">
         <div class="profile__info-row">
-          <h1 class="profile__name">
-            Жак-Ив Кусто
-          </h1>
+          <h1 class="profile__name"></h1>
           <button
             type="button"
             name="edit_profile"
@@ -28,9 +26,7 @@
             class="profile__edit-btn"
           ></button>
         </div>
-        <p class="profile__about">
-          Исследователь океана
-        </p>
+        <p class="profile__about"></p>
       </div>
       <button
         type="button"
@@ -159,6 +155,19 @@
         <img src="#" alt="Фотография поста" class="focus-img__image">
         <figcaption class="focus-img__caption"></figcaption>
       </figure>
+    </div>
+  </div>
+
+  <div class="popup" id="popup_error">
+    <div class="popup__container popup__container_type_info">
+      <button
+      type="button"
+      name="close_popup"
+      value="close-btn"
+      class="popup__close-btn"
+      ></button>
+      <h2 class="popup__error-title"></h2>
+      <p class="popup__error-info"></p>
     </div>
   </div>
 

@@ -1,14 +1,13 @@
 import { Variables } from "./variables.js";
 import { Utils } from "./utils.js";
-import { Card } from "./card.js"
 
 export const Modal = (function(){
   // Заполнение формы для изменения информации о пользователе
   // текущей информацией
-  function setUserInfo(form) {
+  function setUserInfoInForm(form) {
     form.username.value = Variables.profileName.textContent.trim();
     form.user_info.value = Variables.profileAbout.textContent.trim();
-}
+  }
 
   // Открытие модального окна
   function openPopup(popup) {
@@ -53,7 +52,7 @@ export const Modal = (function(){
   // Открытие модального окна изменения профиля
   function openPopupEditProfile () {
     Utils.resetForm(Variables.formEditProfile, Variables.settingsForms);
-    setUserInfo(Variables.formEditProfile);
+    setUserInfoInForm(Variables.formEditProfile);
     Utils.toggleButtonState(
       Variables.inputEditProfile,
       Variables.btnSubmitEditProfileForm,
@@ -81,6 +80,12 @@ export const Modal = (function(){
     openPopup(Variables.popupFocusImage);
   }
 
+  function openPopupError (title, info) {
+    Variables.popupErrorTitle.textContent = title;
+    Variables.popupErrorInfo.textContent = info;
+    openPopup(Variables.popupError);
+  }
+
   // Сохранение измененной информации о пользователе
   function submitEditProfileForm (evt) {
     evt.preventDefault();
@@ -95,6 +100,7 @@ export const Modal = (function(){
     openPopupEditProfile,
     openPopupAddPost,
     openPopupFocusImage,
+    openPopupError,
     submitEditProfileForm,
   }
 }());

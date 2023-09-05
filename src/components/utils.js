@@ -39,7 +39,6 @@ export const Utils = (function() {
     hideInputError,
     hasInvalidInput,
     toggleButtonState,
-    resetForm
-
+    resetForm,
   }
 }());

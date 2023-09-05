@@ -8,6 +8,8 @@ import { Card } from '../components/card.js';
 
 import { Validate } from '../components/validate.js';
 
+import { API } from '../components/api.js';
+
 // Стартовые посты
 const initialCards = [
   {
@@ -52,3 +54,12 @@ Variables.postContainer.addEventListener('click', Card.setPostsListeners);
 
 // Валидация форм
 Validate.enableValidation(Variables.settingsForms);
+
+
+
+
+// API
+
+
+API.getUserInfo(Variables.cohortId, Variables.token);
+

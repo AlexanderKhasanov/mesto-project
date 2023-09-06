@@ -9,6 +9,11 @@ export const Variables = (function() {
   };
 
   const page = document.querySelector('.page');
+
+  const content = page.querySelector('.content');
+
+  const spinner = page.querySelector('.spinner');
+
   const profile = page.querySelector('.profile');
   const profileName = profile.querySelector('.profile__name');
   const profileAbout = profile.querySelector('.profile__about');
@@ -43,6 +48,10 @@ export const Variables = (function() {
 
   return {
     page,
+
+    content,
+    spinner,
+
     profile,
 
     profileName,

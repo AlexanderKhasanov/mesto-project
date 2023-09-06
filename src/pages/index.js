@@ -63,6 +63,6 @@ Validate.enableValidation(Variables.settingsForms);
 // API
 
 
-API.getUserInfo();
-API.loadCards();
-
+//API.getUserInfo();
+//API.loadCards();
+API.loadPage();

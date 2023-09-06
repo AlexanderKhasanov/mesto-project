@@ -8,15 +8,7 @@ export const Card = (function () {
     const postImg = newPost.querySelector('.post__image');
     postImg.src = link;
     postImg.alt = `Фотография поста. ${name}`;
-    //postImg.addEventListener('click', Modal.openPopupFocusImage);
     newPost.querySelector('.post__title').textContent = name;
-    /*
-    newPost.querySelector('.post__like').addEventListener(
-      'click', evt => evt.target.classList.toggle('post__like_active')
-    );
-    newPost.querySelector('.post__delete').addEventListener(
-      'click', evt => evt.target.closest('.posts__item').remove()
-    );*/
     return newPost;
   }
 
@@ -31,11 +23,11 @@ export const Card = (function () {
   }
 
   function likePost(evt) {
-    evt.target.classList.toggle('post__like_active')
+    evt.target.classList.toggle('post__like_active');
   }
 
   function deletePost(evt) {
-    evt.target.closest('.posts__item').remove()
+    evt.target.closest('.posts__item').remove();
   }
 
   function setPostsListeners(evt) {

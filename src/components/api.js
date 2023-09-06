@@ -1,7 +1,21 @@
 import { Variables } from "./variables.js";
 import { Modal } from "./modal.js";
+import { Card } from "./card.js";
 
 export const API = (function() {
+  function requestInfoFromServer (enpoint) {
+    return fetch(`https://nomoreparties.co/v1/${Variables.cohortId}/${enpoint}`, {
+      headers: {
+        authorization: Variables.token
+      }
+    })
+      .then(res => {
+        if (res.ok)
+          return res.json();
+        return Promise.reject(res.status);
+      })
+  }
+
   function setUserInfo (userInfo) {
     Variables.profileName.textContent = userInfo.name;
     Variables.profileAbout.textContent = userInfo.about;
@@ -11,17 +25,8 @@ export const API = (function() {
     Variables.profileAvatar.src = photo;
   }
 
-  function getUserInfo (cohortId, token){
-    fetch(`https://nomoreparties.co/v1/${cohortId}/users/me`, {
-      headers: {
-        authorization: token
-      }
-    })
-      .then(res => {
-        if (res.ok)
-          return res.json();
-        return Promise.reject(res.status);
-      })
+  function getUserInfo () {
+    requestInfoFromServer('users/me')
       .then(data => {
         setUserInfo({
           name: data.name,
@@ -37,7 +42,25 @@ export const API = (function() {
         );
       });
   }
+
+  function loadCards () {
+    requestInfoFromServer('cards')
+      .then(cards => {
+        cards.forEach(post => {
+          Card.createPost(post.name, post.link);
+        });
+      })
+      .catch(err => {
+        console.log(err)
+        Modal.openPopupError(
+          'Ошибка',
+          `Во время загрузки постов возникла ошибка: ${err}`
+        );
+      });
+  }
+
   return {
     getUserInfo,
+    loadCards,
   }
 }());

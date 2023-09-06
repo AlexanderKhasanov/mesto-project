@@ -11,6 +11,7 @@ import { Validate } from '../components/validate.js';
 import { API } from '../components/api.js';
 
 // Стартовые посты
+/*
 const initialCards = [
   {
     name: 'Архыз',
@@ -41,6 +42,7 @@ const initialCards = [
     Card.createPost(post.name, post.link)
   );
 });
+*/
 
 // Открытие модальных окон
 Variables.btnProfileEdit.addEventListener('click', Modal.openPopupEditProfile);
@@ -61,5 +63,6 @@ Validate.enableValidation(Variables.settingsForms);
 // API
 
 
-API.getUserInfo(Variables.cohortId, Variables.token);
+API.getUserInfo();
+API.loadCards();
 

@@ -39,7 +39,7 @@ export const Variables = (function() {
   const popupErrorInfo = popupError.querySelector('.popup__error-info');
 
   const cohortId = 'plus-cohort-28';
-  const token = '';
+  const token = '09266f70-d3b4-4484-a640-19b16aad419c';
 
   return {
     page,

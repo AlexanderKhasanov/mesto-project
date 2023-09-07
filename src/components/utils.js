@@ -41,6 +41,10 @@ export const Utils = (function() {
     Variables.profileAbout.textContent = userInfo.about;
   }
 
+  function setUserAvatar (photo) {
+    Variables.profileAvatar.src = photo;
+  }
+
   return {
     showInputError,
     hideInputError,
@@ -48,5 +52,6 @@ export const Utils = (function() {
     toggleButtonState,
     resetForm,
     setUserInfo,
+    setUserAvatar,
   }
 }());

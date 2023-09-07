@@ -70,7 +70,7 @@ API.getDataForPage()
   .then(data => {
     const [userData, cardsData] = data;
     Utils.setUserInfo(userData);
-
+    Utils.setUserAvatar(userData.avatar);
     Card.renderCards(cardsData);
   })
   .catch(err => {

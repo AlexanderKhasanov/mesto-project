@@ -69,8 +69,8 @@
             minlength="2"
             maxlength="40"
             required
-            pattern="^[a-zA-Zа-яА-я\s\-]+$"
-            data-error-message="Разрешены только латинские буквы, кириллические буквы, знаки дефиса и пробелы"
+            pattern="^[a-zA-Zа-яА-я\s\-\.,]+$"
+            data-error-message="Разрешены только латинские буквы, кириллические буквы, знаки дефиса, точки, запятой и пробелы"
           >
           <span class="profile-name-input-error form__item-error"></span>
           <input
@@ -83,8 +83,8 @@
             minlength="2"
             maxlength="200"
             required
-            pattern="^[a-zA-Zа-яА-я\s\-]+$"
-            data-error-message="Разрешены только латинские буквы, кириллические буквы, знаки дефиса и пробелы"
+            pattern="^[a-zA-Zа-яА-я\s\-\.,]+$"
+            data-error-message="Разрешены только латинские буквы, кириллические буквы, знаки дефиса, точки, запятой и пробелы"
           >
           <span class="profile-about-input-error form__item-error"></span>
         </fieldset>
@@ -106,7 +106,7 @@
       value="close-btn"
       class="popup__close-btn"
       ></button>
-      <form name="profile_info" class="form" novalidate>
+      <form name="add-post" class="form" novalidate>
         <h2 class="form__title">Новое место</h2>
         <fieldset class="form__input-container">
           <input
@@ -119,8 +119,8 @@
             minlength="2"
             maxlength="30"
             required
-            pattern="^[a-zA-Zа-яА-я\s\-]+$"
-            data-error-message="Разрешены только латинские буквы, кириллические буквы, знаки дефиса и пробелы"
+            pattern="^[a-zA-Zа-яА-я\s\-\.,]+$"
+            data-error-message="Разрешены только латинские буквы, кириллические буквы, знаки дефиса, точки, запятой и пробелы"
           >
           <span class="add-post-name-input-error form__item-error"></span>
           <input

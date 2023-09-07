@@ -39,6 +39,18 @@ export const API = (function() {
       //.finally(() => renderLoading(false));
   }
 
+  function changeUserInfo(newUserInfo) {
+    return fetch.apply(`${Variables.baseUrl}/users/me`, {
+      method: 'PATCH',
+      headers: {
+        authorization: Variables.token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newUserInfo)
+    })
+      .then(getResposeData);
+  }
+
   function getCards() {
     /*
     renderLoading(true);
@@ -81,5 +93,6 @@ export const API = (function() {
     getUserInfo,
     getCards,
     getDataForPage,
+    changeUserInfo,
   }
 }());

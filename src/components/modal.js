@@ -1,5 +1,7 @@
 import { Variables } from "./variables.js";
 import { Utils } from "./utils.js";
+import { API } from "./api.js";
+
 
 export const Modal = (function(){
   // Заполнение формы для изменения информации о пользователе
@@ -90,8 +92,18 @@ export const Modal = (function(){
   function submitEditProfileForm (evt) {
     evt.preventDefault();
     const form = Variables.popupEditProfile.querySelector('.form');
-    Variables.profileName.textContent = form.username.value;
-    Variables.profileAbout.textContent = form.user_info.value;
+
+    API.changeUserInfo({
+      name: form.username.value,
+      about: form.user_info.value,
+    })
+      .then(data => Utils.setUserInfo(date))
+      .catch(err => {
+        console.log(`Ошибка: ${err}`);
+      });
+
+    //Variables.profileName.textContent = form.username.value;
+    //Variables.profileAbout.textContent = form.user_info.value;
     closePopup(Variables.popupEditProfile);
   }
 

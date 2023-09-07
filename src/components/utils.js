@@ -1,3 +1,5 @@
+import { Variables } from "./variables.js";
+
 export const Utils = (function() {
   function showInputError(form, inputElement, errorMessage, settingsForm) {
     const errorElement = form.querySelector(`.${inputElement.id}-error`);
@@ -34,11 +36,17 @@ export const Utils = (function() {
     inputList.forEach((inputElement) => hideInputError(form, inputElement, settingsForm));
   }
 
+  function setUserInfo(userInfo) {
+    Variables.profileName.textContent = userInfo.name;
+    Variables.profileAbout.textContent = userInfo.about;
+  }
+
   return {
     showInputError,
     hideInputError,
     hasInvalidInput,
     toggleButtonState,
     resetForm,
+    setUserInfo,
   }
 }());

@@ -14,55 +14,44 @@ export const API = (function() {
     }
   }
 
-  function requestInfoFromServer (enpoint) {
-    return fetch(`https://nomoreparties.co/v1/${Variables.cohortId}/${enpoint}`, {
-      headers: {
-        authorization: Variables.token
-      }
-    })
-      .then(res => {
-        if (res.ok)
-          return res.json();
-        return Promise.reject(res.status);
-      })
-  }
-
-  function setUserInfo (userInfo) {
-    Variables.profileName.textContent = userInfo.name;
-    Variables.profileAbout.textContent = userInfo.about;
-  }
-
   function setUserAvatar (photo) {
     Variables.profileAvatar.src = photo;
   }
 
-  function getUserInfo () {
-    //renderLoading(true);
-    for (let i=0; i<10000; ++i){
+  function getResposeData(res) {
+    if (res.ok)
+      return res.json();
+    return Promise.reject(res.status);
+  }
+
+  function getUserInfo() {
+    /*
+    renderLoading(true);
+    for (let i=0; i<10000; ++i) {
       console.log(i);
     }
-    requestInfoFromServer('users/me')
-      .then(data => {
-        setUserInfo({
-          name: data.name,
-          about: data.about,
-        });
-        setUserAvatar(data.avatar);
-      })
-      .catch(err => {
-        Modal.openPopupError(
-          'Ошибка',
-          `Во время запроса информации о пользователе возникла ошибка: ${err}`
-        );
-      })
+    */
+    return fetch(`${Variables.baseUrl}/users/me`, {
+      headers: {
+        authorization: Variables.token
+      }
+    }).then(getResposeData);
       //.finally(() => renderLoading(false));
   }
 
-  function loadCards () {
-    //renderLoading(true);
-    for (let i=0; i<10000; ++i){
+  function getCards() {
+    /*
+    renderLoading(true);
+    for (let i=0; i<10000; ++i) {
       console.log(i);
     }
+    */
+    return fetch(`${Variables.baseUrl}/cards`, {
+      headers: {
+        authorization: Variables.token
+      }
+    })
+      .then(getResposeData);
     requestInfoFromServer('cards')
       .then(cards => {
         console.log(cards);
@@ -82,16 +71,15 @@ export const API = (function() {
       //.finally(() => renderLoading(false));
   }
 
-  function loadPage() {
-    renderLoading(true);
-    getUserInfo();
-    loadCards();
-    renderLoading(false);
+  function getDataForPage() {
+    //renderLoading(true);
+    return Promise.all([getUserInfo(), getCards()]);
+    //renderLoading(false);
   }
 
   return {
     getUserInfo,
-    loadCards,
-    loadPage,
+    getCards,
+    getDataForPage,
   }
 }());

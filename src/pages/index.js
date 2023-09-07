@@ -9,6 +9,7 @@ import { Card } from '../components/card.js';
 import { Validate } from '../components/validate.js';
 
 import { API } from '../components/api.js';
+import { Utils } from '../components/utils';
 
 // Стартовые посты
 /*
@@ -65,4 +66,13 @@ Validate.enableValidation(Variables.settingsForms);
 
 //API.getUserInfo();
 //API.loadCards();
-API.loadPage();
+API.getDataForPage()
+  .then(data => {
+    const [userData, cardsData] = data;
+    Utils.setUserInfo(userData);
+
+    Card.renderCards(cardsData);
+  })
+  .catch(err => {
+    console.log(`Ошибка: ${err}`);
+  })

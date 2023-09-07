@@ -13,13 +13,21 @@ export const Card = (function () {
   }
 
   // Добавления поста через форму
-  function addNewPost (evt) {
+  function addNewPost(evt) {
     evt.preventDefault();
     const form = Variables.popupAddPost.querySelector('.form');
     Variables.postContainer.prepend(
       createPost(form.post_name.value, form.post_url.value)
     );
     Modal.closePopup(Variables.popupAddPost);
+  }
+
+  function renderCards(cards) {
+    cards.forEach(card => {
+      Variables.postContainer.prepend(
+        createPost(card.name, card.link)
+      );
+    });
   }
 
   function likePost(evt) {
@@ -42,6 +50,7 @@ export const Card = (function () {
   return {
     createPost,
     addNewPost,
-    setPostsListeners
+    setPostsListeners,
+    renderCards,
   }
 }());

@@ -43,7 +43,7 @@ export const Variables = (function() {
   const popupErrorTitle = popupError.querySelector('.popup__error-title');
   const popupErrorInfo = popupError.querySelector('.popup__error-info');
 
-  const cohortId = 'plus-cohort-28';
+  const baseUrl = 'https://nomoreparties.co/v1/plus-cohort-28';
   const token = '09266f70-d3b4-4484-a640-19b16aad419c';
 
   return {
@@ -83,7 +83,7 @@ export const Variables = (function() {
     popupErrorTitle,
     popupErrorInfo,
 
-    cohortId,
+    baseUrl,
     token,
   }
 }());

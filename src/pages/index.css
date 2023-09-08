@@ -35,6 +35,7 @@
 @import url(../blocks/post/__like/post__like.css);
 @import url(../blocks/post/__like/_active/post__like_active.css);
 @import url(../blocks/post/__delete/post__delete.css);
+@import url(../blocks/post/__delete/_disable/post__delete_disable.css);
 
 @import url(../blocks/footer/footer.css);
 @import url(../blocks/footer/__copyright/footer__copyright.css);

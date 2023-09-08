@@ -4,7 +4,7 @@ import { Modal } from '../components/modal.js';
 
 import { Variables } from '../components/variables.js';
 
-import { Card } from '../components/card.js';
+import { Post } from '../components/post.js';
 
 import { Validate } from '../components/validate.js';
 
@@ -40,7 +40,7 @@ const initialCards = [
   }
 ].forEach( post => {
   Variables.postContainer.prepend(
-    Card.createPost(post.name, post.link)
+    Post.createPost(post.name, post.link)
   );
 });
 */
@@ -51,9 +51,9 @@ Variables.btnAddPost.addEventListener('click', Modal.openPopupAddPost);
 
 // Отправка форм
 Variables.btnSubmitEditProfileForm.addEventListener('click', Modal.submitEditProfileForm);
-Variables.btnSubmitAddPostForm.addEventListener('click', Card.addNewPost);
+Variables.btnSubmitAddPostForm.addEventListener('click', Post.addNewPost);
 
-Variables.postContainer.addEventListener('click', Card.setPostsListeners);
+Variables.postContainer.addEventListener('click', Post.setPostsListeners);
 
 // Валидация форм
 Validate.enableValidation(Variables.settingsForms);
@@ -68,11 +68,13 @@ Validate.enableValidation(Variables.settingsForms);
 //API.loadCards();
 API.getDataForPage()
   .then(data => {
-    const [userData, cardsData] = data;
+    const [userData, PostsData] = data;
     Utils.setUserInfo(userData);
     Utils.setUserAvatar(userData.avatar);
-    Card.renderCards(cardsData);
+    Utils.currentUserId = userData._id;
+    Post.renderPosts(PostsData);
   })
   .catch(err => {
     console.log(`Ошибка: ${err}`);
-  })
+  });
+

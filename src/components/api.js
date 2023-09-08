@@ -1,6 +1,6 @@
 import { Variables } from "./variables.js";
 import { Modal } from "./modal.js";
-import { Card } from "./card.js";
+import { Post } from "./post.js";
 
 export const API = (function() {
   function renderLoading(isLoading) {
@@ -40,7 +40,7 @@ export const API = (function() {
   }
 
   function changeUserInfo(newUserInfo) {
-    return fetch.apply(`${Variables.baseUrl}/users/me`, {
+    return fetch(`${Variables.baseUrl}/users/me`, {
       method: 'PATCH',
       headers: {
         authorization: Variables.token,
@@ -51,7 +51,7 @@ export const API = (function() {
       .then(getResposeData);
   }
 
-  function getCards() {
+  function getPosts() {
     /*
     renderLoading(true);
     for (let i=0; i<10000; ++i) {
@@ -69,7 +69,7 @@ export const API = (function() {
         console.log(cards);
         cards.forEach(post => {
           Variables.postContainer.prepend(
-            Card.createPost(post.name, post.link)
+            Post.createPost(post.name, post.link)
           );
         });
       })
@@ -83,16 +83,58 @@ export const API = (function() {
       //.finally(() => renderLoading(false));
   }
 
+  function addNewPost(newPost) {
+    return fetch(`${Variables.baseUrl}/cards`, {
+      method: 'POST',
+      headers: {
+        authorization: Variables.token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newPost)
+    }).then(getResposeData);
+  }
+
+  function deletePost(id) {
+    return fetch(`${Variables.baseUrl}/cards/${id}`, {
+      method: 'DELETE',
+      headers: {
+        authorization: Variables.token
+      }
+    }).then(getResposeData);
+  }
+
+  function likePost(id) {
+    return fetch(`${Variables.baseUrl}/cards/likes/${id}`, {
+      method: 'PUT',
+      headers: {
+        authorization: Variables.token,
+      }
+    }).then(getResposeData);
+  }
+
+  function deleteLikePost(id) {
+    return fetch(`${Variables.baseUrl}/cards/likes/${id}`, {
+      method: 'DELETE',
+      headers: {
+        authorization: Variables.token,
+      }
+    }).then(getResposeData);
+  }
+
   function getDataForPage() {
     //renderLoading(true);
-    return Promise.all([getUserInfo(), getCards()]);
+    return Promise.all([getUserInfo(), getPosts()]);
     //renderLoading(false);
   }
 
   return {
     getUserInfo,
-    getCards,
+    getPosts,
     getDataForPage,
     changeUserInfo,
+    addNewPost,
+    deletePost,
+    likePost,
+    deleteLikePost,
   }
 }());

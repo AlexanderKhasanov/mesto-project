@@ -92,18 +92,14 @@ export const Modal = (function(){
   function submitEditProfileForm (evt) {
     evt.preventDefault();
     const form = Variables.popupEditProfile.querySelector('.form');
-
     API.changeUserInfo({
       name: form.username.value,
       about: form.user_info.value,
     })
-      .then(data => Utils.setUserInfo(date))
+      .then(data => Utils.setUserInfo(data))
       .catch(err => {
         console.log(`Ошибка: ${err}`);
       });
-
-    //Variables.profileName.textContent = form.username.value;
-    //Variables.profileAbout.textContent = form.user_info.value;
     closePopup(Variables.popupEditProfile);
   }
 

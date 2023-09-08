@@ -1,6 +1,8 @@
 import { Variables } from "./variables.js";
 
 export const Utils = (function() {
+  const currentUserId = '';
+
   function showInputError(form, inputElement, errorMessage, settingsForm) {
     const errorElement = form.querySelector(`.${inputElement.id}-error`);
     inputElement.classList.add(settingsForm.inputErrorClass);
@@ -46,6 +48,7 @@ export const Utils = (function() {
   }
 
   return {
+    currentUserId,
     showInputError,
     hideInputError,
     hasInvalidInput,

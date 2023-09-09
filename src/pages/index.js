@@ -35,12 +35,13 @@ API.getDataForPage()
     Utils.setUserAvatar(userData.avatar);
     Utils.currentUserId = userData._id;
     Post.renderPosts(PostsData);
+    Utils.successfulLoadPage();
   })
   .catch(err => {
+    Utils.failedLoadPage();
     Modal.openPopupError(
       'Ошибка загурзки страницы',
       `Во время загурзки страницы возникла ошибка ${err.status}: ${err.statusText}`
     );
-  })
-  .finally(() => Utils.endLoadPage());
+  });
 

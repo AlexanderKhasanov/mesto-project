@@ -1,5 +1,5 @@
 .popup__container {
   position: relative;
   box-sizing: border-box;
-  width: 430px;
+  min-width: 430px;
 }

@@ -46,9 +46,14 @@ export const Utils = (function() {
     Variables.profileAvatar.src = photo;
   }
 
-  function endLoadPage() {
+  function successfulLoadPage() {
     Variables.spinner.classList.remove('spinner_visible');
     Variables.content.classList.remove('content_hidden');
+    Variables.page.querySelector('.supportive-content').classList.remove('supportive-content_hidden');
+  }
+
+  function failedLoadPage() {
+    Variables.spinner.classList.remove('spinner_visible');
     Variables.page.querySelector('.supportive-content').classList.remove('supportive-content_hidden');
   }
 
@@ -60,6 +65,7 @@ export const Utils = (function() {
     resetForm,
     setUserInfo,
     setUserAvatar,
-    endLoadPage,
+    successfulLoadPage,
+    failedLoadPage
   }
 }());

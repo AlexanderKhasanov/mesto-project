@@ -21,6 +21,7 @@ export const Post = (function () {
       newPost.querySelector('.post__delete').classList.add('post__delete_disable');
     if (isLike(post))
       newPost.querySelector('.post__like').classList.add('post__like_active');
+    newPost.querySelector('.post__like-count').textContent = post.likes.length;
     newPost._id = post._id;
     return newPost;
   }
@@ -63,12 +64,12 @@ export const Post = (function () {
   }
 
   function likePost(evt) {
-    //evt.target.classList.toggle('post__like_active');
     const post = evt.target.closest('.posts__item');
     if (!evt.target.classList.contains('post__like_active')) {
       API.likePost(post._id)
       .then(data => {
         evt.target.classList.add('post__like_active');
+        post.querySelector('.post__like-count').textContent = data.likes.length;
       })
       .catch(err => console.log(`Ошибка лайке карточки: ${err}`));
     }
@@ -76,6 +77,7 @@ export const Post = (function () {
       API.deleteLikePost(post._id)
       .then(data => {
         evt.target.classList.remove('post__like_active');
+        post.querySelector('.post__like-count').textContent = data.likes.length;
       })
       .catch(err => console.log(`Ошибка удалении лайка карточки: ${err}`));
     }

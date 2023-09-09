@@ -16,7 +16,9 @@
 @import url(../blocks/spinner/_visible/spinner_visible.css);
 
 @import url(../blocks/profile/profile.css);
+@import url(../blocks/profile/__avatar-container/profile__avatar-container.css);
 @import url(../blocks/profile/__avatar/profile__avatar.css);
+@import url(../blocks/profile/__edit-avatar-btn/profile__edit-avatar-btn.css);
 @import url(../blocks/profile/__info/profile__info.css);
 @import url(../blocks/profile/__info-row/profile__info-row.css);
 @import url(../blocks/profile/__name/profile__name.css);

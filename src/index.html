@@ -11,12 +11,22 @@
   </header>
   <div class="spinner"><i></i></div>
   <main class="content">
+
     <section class="profile">
-      <img
-        src="#"
-        alt="Фотография установленная на аватарке пользователя"
-        class="profile__avatar"
-      >
+      <div class="profile__avatar-container">
+        <button
+          type="button"
+          name="edit_avatar"
+          value="edit_avatar-btn"
+          class="profile__edit-avatar-btn"
+        ></button>
+        <img
+          src="#"
+          alt="Фотография установленная на аватарке пользователя"
+          class="profile__avatar"
+        >
+      </div>
+
       <div class="profile__info">
         <div class="profile__info-row">
           <h1 class="profile__name"></h1>

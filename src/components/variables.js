@@ -29,6 +29,11 @@ export const Variables = (function() {
   const btnSubmitAddPostForm = popupAddPost.querySelector('.form__send-btn');
   const inputListAddPost = Array.from(formAddPost.querySelectorAll(settingsForms.inputSelector));
 
+  const popupEditAvatar = page.querySelector('#popup_edit-avatar');
+  const formEditAvatar = popupEditAvatar.querySelector('.form');
+  const btnSubmitEditAvatarForm = popupEditAvatar.querySelector('.form__send-btn');
+  const inputEditAvatar = Array.from(formEditAvatar.querySelectorAll(settingsForms.inputSelector));
+
   const popupFocusImage = page.querySelector('#popup_focus-img');
   const focusImage = popupFocusImage.querySelector('.focus-img__image');
 
@@ -38,9 +43,13 @@ export const Variables = (function() {
 
   const btnProfileEdit = profile.querySelector('.profile__edit-btn');
   const btnAddPost = profile.querySelector('.profile__add-btn');
+  const btnEditAvatar = profile.querySelector('.profile__edit-avatar-btn');
+
+  const popupConfirmationDelete = page.querySelector('#popup_confirmation-delete');
+  const btnConfirmationDelete = popupConfirmationDelete.querySelector('.form__send-btn');
 
   const popupError = page.querySelector('#popup_error');
-  const popupErrorTitle = popupError.querySelector('.popup__error-title');
+  const popupErrorTitle = popupError.querySelector('.popup__popup-title');
   const popupErrorInfo = popupError.querySelector('.popup__error-info');
 
   const baseUrl = 'https://nomoreparties.co/v1/plus-cohort-28';
@@ -68,6 +77,11 @@ export const Variables = (function() {
     btnSubmitAddPostForm,
     inputListAddPost,
 
+    popupEditAvatar,
+    formEditAvatar,
+    btnSubmitEditAvatarForm,
+    inputEditAvatar,
+
     popupFocusImage,
     focusImage,
 
@@ -77,7 +91,11 @@ export const Variables = (function() {
 
     btnProfileEdit,
     btnAddPost,
+    btnEditAvatar,
     settingsForms,
+
+    popupConfirmationDelete,
+    btnConfirmationDelete,
 
     popupError,
     popupErrorTitle,

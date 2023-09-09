@@ -1,5 +1,5 @@
 .content {
-  min-height: 361px;
+  min-height: calc(210px + 361px + 66px);
   visibility: visible;
   opacity: 1;
   position: relative;

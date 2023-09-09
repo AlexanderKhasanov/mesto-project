@@ -1,42 +1,27 @@
 import { Variables } from "./variables.js";
-import { Modal } from "./modal.js";
-import { Post } from "./post.js";
 
 export const API = (function() {
-  function renderLoading(isLoading) {
-    if (isLoading) {
-      Variables.spinner.classList.add('spinner_visible');
-      Variables.content.classList.add('content_hidden');
-    }
-    else {
-      Variables.spinner.classList.remove('spinner_visible');
-      Variables.content.classList.remove('content_hidden');
-    }
-  }
-
-  function setUserAvatar (photo) {
-    Variables.profileAvatar.src = photo;
-  }
-
-  function getResposeData(res) {
+  function _getResposeData(res) {
     if (res.ok)
       return res.json();
-    return Promise.reject(res.status);
+    return Promise.reject(res);
   }
 
-  function getUserInfo() {
-    /*
-    renderLoading(true);
-    for (let i=0; i<10000; ++i) {
-      console.log(i);
-    }
-    */
+  function _getUserInfo() {
     return fetch(`${Variables.baseUrl}/users/me`, {
       headers: {
         authorization: Variables.token
       }
-    }).then(getResposeData);
-      //.finally(() => renderLoading(false));
+    }).then(_getResposeData);
+  }
+
+  function _getPosts() {
+    return fetch(`${Variables.baseUrl}/cards`, {
+      headers: {
+        authorization: Variables.token
+      }
+    })
+      .then(_getResposeData);
   }
 
   function changeUserInfo(newUserInfo) {
@@ -48,39 +33,19 @@ export const API = (function() {
       },
       body: JSON.stringify(newUserInfo)
     })
-      .then(getResposeData);
+      .then(_getResposeData);
   }
 
-  function getPosts() {
-    /*
-    renderLoading(true);
-    for (let i=0; i<10000; ++i) {
-      console.log(i);
-    }
-    */
-    return fetch(`${Variables.baseUrl}/cards`, {
+  function changeUserAvatar(newUserAvatar) {
+    return fetch(`${Variables.baseUrl}/users/me/avatar`, {
+      method: 'PATCH',
       headers: {
-        authorization: Variables.token
-      }
+        authorization: Variables.token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newUserAvatar)
     })
-      .then(getResposeData);
-    requestInfoFromServer('cards')
-      .then(cards => {
-        console.log(cards);
-        cards.forEach(post => {
-          Variables.postContainer.prepend(
-            Post.createPost(post.name, post.link)
-          );
-        });
-      })
-      .catch(err => {
-        console.log(err)
-        Modal.openPopupError(
-          'Ошибка',
-          `Во время загрузки постов возникла ошибка: ${err}`
-        );
-      })
-      //.finally(() => renderLoading(false));
+      .then(_getResposeData);
   }
 
   function addNewPost(newPost) {
@@ -91,7 +56,7 @@ export const API = (function() {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(newPost)
-    }).then(getResposeData);
+    }).then(_getResposeData);
   }
 
   function deletePost(id) {
@@ -100,7 +65,7 @@ export const API = (function() {
       headers: {
         authorization: Variables.token
       }
-    }).then(getResposeData);
+    }).then(_getResposeData);
   }
 
   function likePost(id) {
@@ -109,7 +74,7 @@ export const API = (function() {
       headers: {
         authorization: Variables.token,
       }
-    }).then(getResposeData);
+    }).then(_getResposeData);
   }
 
   function deleteLikePost(id) {
@@ -118,20 +83,17 @@ export const API = (function() {
       headers: {
         authorization: Variables.token,
       }
-    }).then(getResposeData);
+    }).then(_getResposeData);
   }
 
   function getDataForPage() {
-    //renderLoading(true);
-    return Promise.all([getUserInfo(), getPosts()]);
-    //renderLoading(false);
+    return Promise.all([_getUserInfo(), _getPosts()]);
   }
 
   return {
-    getUserInfo,
-    getPosts,
     getDataForPage,
     changeUserInfo,
+    changeUserAvatar,
     addNewPost,
     deletePost,
     likePost,

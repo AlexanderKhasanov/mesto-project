@@ -3,6 +3,10 @@ import { Variables } from "./variables.js";
 export const Utils = (function() {
   const currentUserId = '';
 
+  function _hasInvalidInput(inputList) {
+    return inputList.some((inputElement) => !inputElement.validity.valid);
+  }
+
   function showInputError(form, inputElement, errorMessage, settingsForm) {
     const errorElement = form.querySelector(`.${inputElement.id}-error`);
     inputElement.classList.add(settingsForm.inputErrorClass);
@@ -17,19 +21,14 @@ export const Utils = (function() {
     errorElement.textContent = '';
   }
 
-  function hasInvalidInput(inputList) {
-    return inputList.some((inputElement) => !inputElement.validity.valid);
-  }
-
   function toggleButtonState(inputList, buttonElement, settingsForm) {
-    if (hasInvalidInput(inputList)) {
+    if (_hasInvalidInput(inputList)) {
       buttonElement.classList.add(settingsForm.inactiveButtonClass);
       buttonElement.disabled = true;
     } else {
       buttonElement.classList.remove(settingsForm.inactiveButtonClass);
       buttonElement.disabled = false;
     }
-
   }
 
   function resetForm (form, settingsForm) {
@@ -47,14 +46,20 @@ export const Utils = (function() {
     Variables.profileAvatar.src = photo;
   }
 
+  function endLoadPage() {
+    Variables.spinner.classList.remove('spinner_visible');
+    Variables.content.classList.remove('content_hidden');
+    Variables.page.querySelector('.supportive-content').classList.remove('supportive-content_hidden');
+  }
+
   return {
     currentUserId,
     showInputError,
     hideInputError,
-    hasInvalidInput,
     toggleButtonState,
     resetForm,
     setUserInfo,
     setUserAvatar,
+    endLoadPage,
   }
 }());

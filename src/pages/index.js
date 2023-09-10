@@ -10,18 +10,13 @@ import { Validate } from '../components/validate.js';
 
 import { API } from '../components/api.js';
 
-import { Utils } from '../components/utils';
+import { Utils } from '../components/utils.js';
 
 
 // Открытие модальных окон
 Variables.btnProfileEdit.addEventListener('click', Modal.openPopupEditProfile);
 Variables.btnAddPost.addEventListener('click', Modal.openPopupAddPost);
 Variables.btnEditAvatar.addEventListener('click', Modal.openPopupEditAvatar);
-
-// Отправка форм
-Variables.btnSubmitEditProfileForm.addEventListener('click', Modal.submitEditProfileForm);
-Variables.btnSubmitAddPostForm.addEventListener('click', Modal.submitAddNewPost);
-Variables.btnSubmitEditAvatarForm.addEventListener('click', Modal.submitEditAvatarForm);
 
 Variables.postContainer.addEventListener('click', Post.setPostsListeners);
 
@@ -40,8 +35,8 @@ API.getDataForPage()
   .catch(err => {
     Utils.failedLoadPage();
     Modal.openPopupError(
-      'Ошибка загурзки страницы',
-      `Во время загурзки страницы возникла ошибка ${err.status}: ${err.statusText}`
+      `Во время загурзки страницы возникла ошибка (код ${err.status})`
     );
+    setTimeout(Modal.closePopup, 3000, Variables.popupError);
   });
 

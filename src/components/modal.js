@@ -3,8 +3,12 @@ import { Utils } from "./utils.js";
 import { API } from "./api.js";
 import { Post } from "./post.js";
 
-
 export const Modal = (function(){
+  let _submitButtonHandler = null;
+  let _currentButton = null;
+  const _timeoutEditButtonText = 500;
+  const _timeoutCloseErrorPopup = 3000;
+
   function _editTextSubmitButton(button, textButton) {
     button.textContent = textButton;
   }
@@ -17,16 +21,15 @@ export const Modal = (function(){
   }
 
   // Открытие модального окна
-  function _openPopup(popup) {
+  function _openPopup(popup, submitBtn=null, handlerButton=null) {
     popup.classList.add('popup_opened');
-    _setPopupEventListeners(popup);
+    _setPopupEventListeners(popup, submitBtn, handlerButton);
   }
 
   // Закрытие модального окна по нажатию на оверлей или кнопку закрытия
   function _closePopupClick(evt) {
     const popup = Variables.page.querySelector('.popup_opened');
-    if (evt.target.classList.contains('popup') ||
-        evt.target.classList.contains('popup__close-btn'))
+    if (evt.target.classList.contains('popup') || evt.target.classList.contains('popup__close-btn'))
       closePopup(popup);
   }
 
@@ -39,21 +42,31 @@ export const Modal = (function(){
   }
 
   // Установка слушателей для модальных окон
-  function _setPopupEventListeners(popup) {
-    document.addEventListener('keydown', _closePopupEsc);
-    popup.addEventListener('click', _closePopupClick)
+  function _setPopupEventListeners(popup, submitBtn=null, handlerButton=null) {
+    if (popup.id !== 'popup_error') {
+      document.addEventListener('keydown', _closePopupEsc);
+      popup.addEventListener('click', _closePopupClick)
+      if (submitBtn !== null && handlerButton !== null)
+        submitBtn.addEventListener('click', handlerButton);
+    }
   }
 
   // Удаление слушателей для модальных окон
   function _deleteEventListener(popup) {
     document.removeEventListener('keydown', _closePopupEsc);
     popup.removeEventListener('click', _closePopupClick)
+    if (_submitButtonHandler !== null && _currentButton !== null) {
+      _currentButton.removeEventListener('click', _submitButtonHandler);
+      _currentButton = null;
+      _submitButtonHandler = null;
+    }
   }
 
   // Закрытие модального окна
   function closePopup(popup) {
     popup.classList.remove('popup_opened');
-    _deleteEventListener(popup);
+    if (popup.id !== 'popup_error')
+      _deleteEventListener(popup);
   }
 
   // Открытие модального окна изменения профиля
@@ -65,8 +78,9 @@ export const Modal = (function(){
       Variables.btnSubmitEditProfileForm,
       Variables.settingsForms
     );
-    _editTextSubmitButton(Variables.btnSubmitEditProfileForm, 'Сохранить');
-    _openPopup(Variables.popupEditProfile);
+    _currentButton = Variables.btnSubmitEditProfileForm;
+    _submitButtonHandler = submitEditProfileForm;
+    _openPopup(Variables.popupEditProfile, _currentButton, _submitButtonHandler);
   }
 
   // Открытие модального окна добавления поста
@@ -77,8 +91,9 @@ export const Modal = (function(){
       Variables.btnSubmitAddPostForm,
       Variables.settingsForms
     );
-    _editTextSubmitButton(Variables.btnSubmitAddPostForm, 'Добавить');
-    _openPopup(Variables.popupAddPost);
+    _currentButton = Variables.btnSubmitAddPostForm;
+    _submitButtonHandler = submitAddNewPost;
+    _openPopup(Variables.popupAddPost, _currentButton, _submitButtonHandler);
   }
 
   function openPopupEditAvatar() {
@@ -88,8 +103,9 @@ export const Modal = (function(){
       Variables.btnSubmitEditAvatarForm,
       Variables.settingsForms
     );
-    _editTextSubmitButton(Variables.btnSubmitEditAvatarForm, 'Сохранить');
-    _openPopup(Variables.popupEditAvatar);
+    _currentButton = Variables.btnSubmitEditAvatarForm;
+    _submitButtonHandler = submitEditAvatarForm;
+    _openPopup(Variables.popupEditAvatar, _currentButton, _submitButtonHandler);
   }
 
   // Открытие модального окна с увеличенным изображением
@@ -101,12 +117,13 @@ export const Modal = (function(){
   }
 
   function openPopupConfirmationDelete(evt) {
-    Variables.btnConfirmationDelete.addEventListener('click', Post._deletePost.bind(evt), {once: true});
+    _submitButtonHandler = Post._deletePost.bind(evt);
+    _currentButton = Variables.btnConfirmationDelete;
+    Variables.btnConfirmationDelete.addEventListener('click', _submitButtonHandler, {once: true});
     _openPopup(Variables.popupConfirmationDelete);
   }
 
-  function openPopupError(title, info) {
-    Variables.popupErrorTitle.textContent = title;
+  function openPopupError(info) {
     Variables.popupErrorInfo.textContent = info;
     _openPopup(Variables.popupError);
   }
@@ -121,15 +138,15 @@ export const Modal = (function(){
     })
       .then(data => {
         Utils.setUserInfo(data);
-        _editTextSubmitButton(Variables.btnSubmitEditProfileForm, 'Успешно');
+        closePopup(Variables.popupEditProfile);
       })
       .catch(err => {
         openPopupError(
-          'Ошибка сохранения профиля',
-          `Во время сохранения профиля возникла ошибка ${err.status}: ${err.statusText}`
+          `Во время сохранения профиля возникла ошибка (код ${err.status})`
         );
+        setTimeout(closePopup, _timeoutCloseErrorPopup, Variables.popupError);
       })
-      .finally(() => closePopup(Variables.popupEditProfile));
+      .finally(() => setTimeout(_editTextSubmitButton, _timeoutEditButtonText, Variables.btnSubmitEditProfileForm, 'Сохранить'));
   }
 
   // Добавления поста через форму
@@ -144,15 +161,15 @@ export const Modal = (function(){
         Variables.postContainer.prepend(
           Post.createPost(data)
         );
-        _editTextSubmitButton(Variables.btnSubmitAddPostForm, 'Успешно');
+        closePopup(Variables.popupAddPost);
       })
       .catch(err => {
         openPopupError(
-          'Ошибка создания поста',
-          `Во время создания поста возникла ошибка ${err.status}: ${err.statusText}`
+          `Во время создания поста возникла ошибка (код ${err.status})`
         );
+        setTimeout(closePopup, _timeoutCloseErrorPopup, Variables.popupError);
       })
-      .finally(() => closePopup(Variables.popupAddPost));
+      .finally(() => setTimeout(_editTextSubmitButton, _timeoutEditButtonText, Variables.btnSubmitAddPostForm, 'Создать'));
   }
 
   function submitEditAvatarForm(evt) {
@@ -163,15 +180,15 @@ export const Modal = (function(){
     })
       .then(data => {
         Utils.setUserAvatar(data.avatar);
-        _editTextSubmitButton(Variables.btnSubmitEditAvatarForm, 'Успешно')
+        closePopup(Variables.popupEditAvatar);
       })
       .catch(err => {
         openPopupError(
-          'Ошибка изменения фотографии профиля',
-          `Во время фотографии профиля возникла ошибка ${err.status}: ${err.statusText}`
+          `Во время фотографии профиля возникла ошибка (код ${err.status})`
         );
+        setTimeout(closePopup, _timeoutCloseErrorPopup, Variables.popupError);
       })
-      .finally(() => closePopup(Variables.popupEditAvatar));
+      .finally(() => setTimeout(_editTextSubmitButton, _timeoutEditButtonText, Variables.btnSubmitEditAvatarForm, 'Сохранить'));
   }
 
   return {

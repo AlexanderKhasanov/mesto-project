@@ -49,7 +49,6 @@ export const Variables = (function() {
   const btnConfirmationDelete = popupConfirmationDelete.querySelector('.form__send-btn');
 
   const popupError = page.querySelector('#popup_error');
-  const popupErrorTitle = popupError.querySelector('.popup__popup-title');
   const popupErrorInfo = popupError.querySelector('.popup__error-info');
 
   const baseUrl = 'https://nomoreparties.co/v1/plus-cohort-28';
@@ -98,7 +97,6 @@ export const Variables = (function() {
     btnConfirmationDelete,
 
     popupError,
-    popupErrorTitle,
     popupErrorInfo,
 
     baseUrl,

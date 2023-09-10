@@ -1,13 +1,13 @@
-.popup__container_type_info {
-  padding: 34px 36px 37px;
+.popup__container_type_error {
+  margin-top: 25px;
+  padding: 10px 36px;
   background-color: #fff;
   max-width: 430px;
   border-radius: 10px;
 }
 
 @media screen and (max-width: 599px) {
-  .popup__container_type_info {
-    padding: 25px 22px;
+  .popup__container_type_error {
     max-width: 282px;
   }
 }

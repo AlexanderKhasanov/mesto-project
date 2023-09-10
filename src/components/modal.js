@@ -1,9 +1,9 @@
-import { Variables } from "./variables.js";
-import { Utils } from "./utils.js";
-import { API } from "./api.js";
-import { Post } from "./post.js";
+import { variables } from "./variables.js";
+import { utils } from "./utils.js";
+import { api } from "./api.js";
+import { post } from "./post.js";
 
-export const Modal = (function(){
+export const modal = (function(){
   let _submitButtonHandler = null;
   let _currentButton = null;
   const _timeoutEditButtonText = 500;
@@ -16,8 +16,8 @@ export const Modal = (function(){
   // Заполнение формы для изменения информации о пользователе
   // текущей информацией
   function _setUserInfoInForm(form) {
-    form.username.value = Variables.profileName.textContent.trim();
-    form.user_info.value = Variables.profileAbout.textContent.trim();
+    form.username.value = variables.profileName.textContent.trim();
+    form.user_info.value = variables.profileAbout.textContent.trim();
   }
 
   // Открытие модального окна
@@ -28,7 +28,7 @@ export const Modal = (function(){
 
   // Закрытие модального окна по нажатию на оверлей или кнопку закрытия
   function _closePopupClick(evt) {
-    const popup = Variables.page.querySelector('.popup_opened');
+    const popup = variables.page.querySelector('.popup_opened');
     if (evt.target.classList.contains('popup') || evt.target.classList.contains('popup__close-btn'))
       closePopup(popup);
   }
@@ -36,7 +36,7 @@ export const Modal = (function(){
   // Закрытие модального окна по нажатию ESC
   function _closePopupEsc(evt) {
     if (evt.key === 'Escape'){
-      const popup = Variables.page.querySelector('.popup_opened');
+      const popup = variables.page.querySelector('.popup_opened');
       closePopup(popup);
     }
   }
@@ -71,124 +71,124 @@ export const Modal = (function(){
 
   // Открытие модального окна изменения профиля
   function openPopupEditProfile() {
-    Utils.resetForm(Variables.formEditProfile, Variables.settingsForms);
-    _setUserInfoInForm(Variables.formEditProfile);
-    Utils.toggleButtonState(
-      Variables.inputEditProfile,
-      Variables.btnSubmitEditProfileForm,
-      Variables.settingsForms
+    utils.resetForm(variables.formEditProfile, variables.settingsForms);
+    _setUserInfoInForm(variables.formEditProfile);
+    utils.toggleButtonState(
+      variables.inputEditProfile,
+      variables.btnSubmitEditProfileForm,
+      variables.settingsForms
     );
-    _currentButton = Variables.btnSubmitEditProfileForm;
+    _currentButton = variables.btnSubmitEditProfileForm;
     _submitButtonHandler = submitEditProfileForm;
-    _openPopup(Variables.popupEditProfile, _currentButton, _submitButtonHandler);
+    _openPopup(variables.popupEditProfile, _currentButton, _submitButtonHandler);
   }
 
   // Открытие модального окна добавления поста
   function openPopupAddPost() {
-    Utils.resetForm(Variables.formAddPost, Variables.settingsForms);
-    Utils.toggleButtonState(
-      Variables.inputListAddPost,
-      Variables.btnSubmitAddPostForm,
-      Variables.settingsForms
+    utils.resetForm(variables.formAddPost, variables.settingsForms);
+    utils.toggleButtonState(
+      variables.inputListAddPost,
+      variables.btnSubmitAddPostForm,
+      variables.settingsForms
     );
-    _currentButton = Variables.btnSubmitAddPostForm;
+    _currentButton = variables.btnSubmitAddPostForm;
     _submitButtonHandler = submitAddNewPost;
-    _openPopup(Variables.popupAddPost, _currentButton, _submitButtonHandler);
+    _openPopup(variables.popupAddPost, _currentButton, _submitButtonHandler);
   }
 
   function openPopupEditAvatar() {
-    Utils.resetForm(Variables.formEditAvatar, Variables.settingsForms);
-    Utils.toggleButtonState(
-      Variables.inputEditAvatar,
-      Variables.btnSubmitEditAvatarForm,
-      Variables.settingsForms
+    utils.resetForm(variables.formEditAvatar, variables.settingsForms);
+    utils.toggleButtonState(
+      variables.inputEditAvatar,
+      variables.btnSubmitEditAvatarForm,
+      variables.settingsForms
     );
-    _currentButton = Variables.btnSubmitEditAvatarForm;
+    _currentButton = variables.btnSubmitEditAvatarForm;
     _submitButtonHandler = submitEditAvatarForm;
-    _openPopup(Variables.popupEditAvatar, _currentButton, _submitButtonHandler);
+    _openPopup(variables.popupEditAvatar, _currentButton, _submitButtonHandler);
   }
 
   // Открытие модального окна с увеличенным изображением
   function openPopupFocusImage(evt) {
-    Variables.focusImage.src = evt.target.src;
-    Variables.focusImage.alt = evt.target.alt;
-    Variables.popupFocusImage.querySelector('.focus-img__caption').textContent = evt.target.closest('.post').querySelector('.post__title').textContent;
-    _openPopup(Variables.popupFocusImage);
+    variables.focusImage.src = evt.target.src;
+    variables.focusImage.alt = evt.target.alt;
+    variables.popupFocusImage.querySelector('.focus-img__caption').textContent = evt.target.closest('.post').querySelector('.post__title').textContent;
+    _openPopup(variables.popupFocusImage);
   }
 
   function openPopupConfirmationDelete(evt) {
-    _submitButtonHandler = Post._deletePost.bind(evt);
-    _currentButton = Variables.btnConfirmationDelete;
-    Variables.btnConfirmationDelete.addEventListener('click', _submitButtonHandler, {once: true});
-    _openPopup(Variables.popupConfirmationDelete);
+    _submitButtonHandler = post._deletePost.bind(evt);
+    _currentButton = variables.btnConfirmationDelete;
+    variables.btnConfirmationDelete.addEventListener('click', _submitButtonHandler, {once: true});
+    _openPopup(variables.popupConfirmationDelete);
   }
 
   function openPopupError(info) {
-    Variables.popupErrorInfo.textContent = info;
-    _openPopup(Variables.popupError);
+    variables.popupErrorInfo.textContent = info;
+    _openPopup(variables.popupError);
   }
 
   // Сохранение измененной информации о пользователе
   function submitEditProfileForm(evt) {
     evt.preventDefault();
-    _editTextSubmitButton(Variables.btnSubmitEditProfileForm, 'Сохранение...');
-    API.changeUserInfo({
-      name: Variables.formEditProfile.username.value,
-      about: Variables.formEditProfile.user_info.value,
+    _editTextSubmitButton(variables.btnSubmitEditProfileForm, 'Сохранение...');
+    api.changeUserInfo({
+      name: variables.formEditProfile.username.value,
+      about: variables.formEditProfile.user_info.value,
     })
       .then(data => {
-        Utils.setUserInfo(data);
-        closePopup(Variables.popupEditProfile);
+        utils.setUserInfo(data);
+        closePopup(variables.popupEditProfile);
       })
       .catch(err => {
         openPopupError(
           `Во время сохранения профиля возникла ошибка (код ${err.status})`
         );
-        setTimeout(closePopup, _timeoutCloseErrorPopup, Variables.popupError);
+        setTimeout(closePopup, _timeoutCloseErrorPopup, variables.popupError);
       })
-      .finally(() => setTimeout(_editTextSubmitButton, _timeoutEditButtonText, Variables.btnSubmitEditProfileForm, 'Сохранить'));
+      .finally(() => setTimeout(_editTextSubmitButton, _timeoutEditButtonText, variables.btnSubmitEditProfileForm, 'Сохранить'));
   }
 
   // Добавления поста через форму
   function submitAddNewPost(evt) {
     evt.preventDefault();
-    _editTextSubmitButton(Variables.btnSubmitAddPostForm, 'Загрузка поста...');
-    API.addNewPost({
-      name: Variables.formAddPost.post_name.value,
-      link: Variables.formAddPost.post_url.value,
+    _editTextSubmitButton(variables.btnSubmitAddPostForm, 'Загрузка поста...');
+    api.addNewPost({
+      name: variables.formAddPost.post_name.value,
+      link: variables.formAddPost.post_url.value,
     })
       .then(data => {
-        Variables.postContainer.prepend(
-          Post.createPost(data)
+        variables.postContainer.prepend(
+          post.createPost(data)
         );
-        closePopup(Variables.popupAddPost);
+        closePopup(variables.popupAddPost);
       })
       .catch(err => {
         openPopupError(
           `Во время создания поста возникла ошибка (код ${err.status})`
         );
-        setTimeout(closePopup, _timeoutCloseErrorPopup, Variables.popupError);
+        setTimeout(closePopup, _timeoutCloseErrorPopup, variables.popupError);
       })
-      .finally(() => setTimeout(_editTextSubmitButton, _timeoutEditButtonText, Variables.btnSubmitAddPostForm, 'Создать'));
+      .finally(() => setTimeout(_editTextSubmitButton, _timeoutEditButtonText, variables.btnSubmitAddPostForm, 'Создать'));
   }
 
   function submitEditAvatarForm(evt) {
     evt.preventDefault();
-    _editTextSubmitButton(Variables.btnSubmitEditAvatarForm, 'Сохранение...');
-    API.changeUserAvatar({
-      avatar: Variables.formEditAvatar.avatar_url.value
+    _editTextSubmitButton(variables.btnSubmitEditAvatarForm, 'Сохранение...');
+    api.changeUserAvatar({
+      avatar: variables.formEditAvatar.avatar_url.value
     })
       .then(data => {
-        Utils.setUserAvatar(data.avatar);
-        closePopup(Variables.popupEditAvatar);
+        utils.setUserAvatar(data.avatar);
+        closePopup(variables.popupEditAvatar);
       })
       .catch(err => {
         openPopupError(
           `Во время фотографии профиля возникла ошибка (код ${err.status})`
         );
-        setTimeout(closePopup, _timeoutCloseErrorPopup, Variables.popupError);
+        setTimeout(closePopup, _timeoutCloseErrorPopup, variables.popupError);
       })
-      .finally(() => setTimeout(_editTextSubmitButton, _timeoutEditButtonText, Variables.btnSubmitEditAvatarForm, 'Сохранить'));
+      .finally(() => setTimeout(_editTextSubmitButton, _timeoutEditButtonText, variables.btnSubmitEditAvatarForm, 'Сохранить'));
   }
 
   return {

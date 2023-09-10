@@ -1,4 +1,4 @@
-export const Variables = (function() {
+export const variables = (function() {
   const settingsForms = {
     formSelector: '.form',
     inputSelector: '.form__item',

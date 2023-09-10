@@ -1,6 +1,6 @@
-import { Variables } from "./variables.js";
+import { variables } from "./variables.js";
 
-export const API = (function() {
+export const api = (function() {
   function _getResposeData(res) {
     if (res.ok)
       return res.json();
@@ -8,27 +8,27 @@ export const API = (function() {
   }
 
   function _getUserInfo() {
-    return fetch(`${Variables.baseUrl}/users/me`, {
+    return fetch(`${variables.baseUrl}/users/me`, {
       headers: {
-        authorization: Variables.token
+        authorization: variables.token
       }
     }).then(_getResposeData);
   }
 
   function _getPosts() {
-    return fetch(`${Variables.baseUrl}/cards`, {
+    return fetch(`${variables.baseUrl}/cards`, {
       headers: {
-        authorization: Variables.token
+        authorization: variables.token
       }
     })
       .then(_getResposeData);
   }
 
   function changeUserInfo(newUserInfo) {
-    return fetch(`${Variables.baseUrl}/users/me`, {
+    return fetch(`${variables.baseUrl}/users/me`, {
       method: 'PATCH',
       headers: {
-        authorization: Variables.token,
+        authorization: variables.token,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(newUserInfo)
@@ -37,10 +37,10 @@ export const API = (function() {
   }
 
   function changeUserAvatar(newUserAvatar) {
-    return fetch(`${Variables.baseUrl}/users/me/avatar`, {
+    return fetch(`${variables.baseUrl}/users/me/avatar`, {
       method: 'PATCH',
       headers: {
-        authorization: Variables.token,
+        authorization: variables.token,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(newUserAvatar)
@@ -49,10 +49,10 @@ export const API = (function() {
   }
 
   function addNewPost(newPost) {
-    return fetch(`${Variables.baseUrl}/cards`, {
+    return fetch(`${variables.baseUrl}/cards`, {
       method: 'POST',
       headers: {
-        authorization: Variables.token,
+        authorization: variables.token,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(newPost)
@@ -60,28 +60,28 @@ export const API = (function() {
   }
 
   function deletePost(id) {
-    return fetch(`${Variables.baseUrl}/cards/${id}`, {
+    return fetch(`${variables.baseUrl}/cards/${id}`, {
       method: 'DELETE',
       headers: {
-        authorization: Variables.token
+        authorization: variables.token
       }
     }).then(_getResposeData);
   }
 
   function likePost(id) {
-    return fetch(`${Variables.baseUrl}/cards/likes/${id}`, {
+    return fetch(`${variables.baseUrl}/cards/likes/${id}`, {
       method: 'PUT',
       headers: {
-        authorization: Variables.token,
+        authorization: variables.token,
       }
     }).then(_getResposeData);
   }
 
   function deleteLikePost(id) {
-    return fetch(`${Variables.baseUrl}/cards/likes/${id}`, {
+    return fetch(`${variables.baseUrl}/cards/likes/${id}`, {
       method: 'DELETE',
       headers: {
-        authorization: Variables.token,
+        authorization: variables.token,
       }
     }).then(_getResposeData);
   }

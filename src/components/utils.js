@@ -1,6 +1,6 @@
-import { Variables } from "./variables.js";
+import { variables } from "./variables.js";
 
-export const Utils = (function() {
+export const utils = (function() {
   const currentUserId = '';
 
   function _hasInvalidInput(inputList) {
@@ -38,23 +38,23 @@ export const Utils = (function() {
   }
 
   function setUserInfo(userInfo) {
-    Variables.profileName.textContent = userInfo.name;
-    Variables.profileAbout.textContent = userInfo.about;
+    variables.profileName.textContent = userInfo.name;
+    variables.profileAbout.textContent = userInfo.about;
   }
 
   function setUserAvatar (photo) {
-    Variables.profileAvatar.src = photo;
+    variables.profileAvatar.src = photo;
   }
 
   function successfulLoadPage() {
-    Variables.spinner.classList.remove('spinner_visible');
-    Variables.content.classList.remove('content_hidden');
-    Variables.page.querySelector('.supportive-content').classList.remove('supportive-content_hidden');
+    variables.spinner.classList.remove('spinner_visible');
+    variables.content.classList.remove('content_hidden');
+    variables.page.querySelector('.supportive-content').classList.remove('supportive-content_hidden');
   }
 
   function failedLoadPage() {
-    Variables.spinner.classList.remove('spinner_visible');
-    Variables.page.querySelector('.supportive-content').classList.remove('supportive-content_hidden');
+    variables.spinner.classList.remove('spinner_visible');
+    variables.page.querySelector('.supportive-content').classList.remove('supportive-content_hidden');
   }
 
   return {

@@ -1,18 +1,18 @@
-import { Variables } from "./variables.js";
-import { Modal } from "./modal.js";
-import { API } from "./api.js";
-import { Utils } from "./utils.js";
+import { variables } from "./variables.js";
+import { modal } from "./modal.js";
+import { api } from "./api.js";
+import { utils } from "./utils.js";
 
-export const Post = (function () {
+export const post = (function () {
   function _isLike(post) {
     return post.likes.some(people => {
-      return people._id === Utils.currentUserId;
+      return people._id === utils.currentUserId;
     })
   }
 
   function _deletePost() {
     const post = this.target.closest('.posts__item');
-    API.deletePost(post._id)
+    api.deletePost(post._id)
       .then(() => {
         post.remove();
       })
@@ -22,13 +22,13 @@ export const Post = (function () {
           `Во время удаления поста возникла ошибка ${err.status}: ${err.statusText}`
         );
       })
-      .finally(() => Modal.closePopup(Variables.popupConfirmationDelete));
+      .finally(() => modal.closePopup(variables.popupConfirmationDelete));
   }
 
   function _likePost(evt) {
     const post = evt.target.closest('.posts__item');
     if (!evt.target.classList.contains('post__like_active')) {
-      API.likePost(post._id)
+      api.likePost(post._id)
       .then(data => {
         evt.target.classList.add('post__like_active');
         post.querySelector('.post__like-count').textContent = data.likes.length;
@@ -41,7 +41,7 @@ export const Post = (function () {
       });
     }
     else {
-      API.deleteLikePost(post._id)
+      api.deleteLikePost(post._id)
       .then(data => {
         evt.target.classList.remove('post__like_active');
         post.querySelector('.post__like-count').textContent = data.likes.length;
@@ -57,12 +57,12 @@ export const Post = (function () {
 
   // Создание поста
   function createPost (post) {
-    const newPost = Variables.postCardTemplate.cloneNode(true);
+    const newPost = variables.postCardTemplate.cloneNode(true);
     const postImg = newPost.querySelector('.post__image');
     postImg.src = post.link;
     postImg.alt = `Фотография поста. ${post.name}`;
     newPost.querySelector('.post__title').textContent = post.name;
-    if (post.owner._id !== Utils.currentUserId)
+    if (post.owner._id !== utils.currentUserId)
       newPost.querySelector('.post__delete').classList.add('post__delete_disable');
 
     if (_isLike(post))
@@ -74,7 +74,7 @@ export const Post = (function () {
 
   function renderPosts(posts) {
     posts.forEach(post => {
-      Variables.postContainer.append(
+      variables.postContainer.append(
         createPost(post)
       );
     });
@@ -85,9 +85,9 @@ export const Post = (function () {
       _likePost(evt);
     if (evt.target.classList.contains('post__delete'))
       //_deletePost(evt);
-      Modal.openPopupConfirmationDelete(evt);
+      modal.openPopupConfirmationDelete(evt);
     if (evt.target.classList.contains('post__image'))
-      Modal.openPopupFocusImage(evt);
+      modal.openPopupFocusImage(evt);
   }
 
   return {

@@ -1,6 +1,6 @@
-import { Utils } from "./utils.js";
+import { utils } from "./utils.js";
 
-export const Validate = (function () {
+export const validate = (function () {
   function checkInputValidity(form, inputElement, settingsForm) {
     if (inputElement.validity.patternMismatch)
       inputElement.setCustomValidity(inputElement.dataset.errorMessage);
@@ -8,9 +8,9 @@ export const Validate = (function () {
       inputElement.setCustomValidity('');
 
     if (!inputElement.validity.valid)
-      Utils.showInputError(form, inputElement, inputElement.validationMessage, settingsForm);
+      utils.showInputError(form, inputElement, inputElement.validationMessage, settingsForm);
     else
-      Utils.hideInputError(form, inputElement, settingsForm);
+      utils.hideInputError(form, inputElement, settingsForm);
   }
 
   function setFormEventListeners(form, settingsForm) {
@@ -19,7 +19,7 @@ export const Validate = (function () {
     inputList.forEach((inputElement) => {
       inputElement.addEventListener('input', () => {
         checkInputValidity(form, inputElement, settingsForm);
-        Utils.toggleButtonState(inputList, buttonElement, settingsForm);
+        utils.toggleButtonState(inputList, buttonElement, settingsForm);
       });
     });
   }

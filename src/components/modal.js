@@ -1,7 +1,7 @@
 import { variables } from "./variables.js";
 import { utils } from "./utils.js";
 import Api from "./api.js";
-import { post } from "./post.js";
+import post from "./card.js";
 
 export const modal = (function(){
   let _submitButtonHandler = null;
@@ -109,10 +109,11 @@ export const modal = (function(){
   }
 
   // Открытие модального окна с увеличенным изображением
-  function openPopupFocusImage(evt) {
-    variables.focusImage.src = evt.target.src;
-    variables.focusImage.alt = evt.target.alt;
-    variables.popupFocusImage.querySelector('.focus-img__caption').textContent = evt.target.closest('.post').querySelector('.post__title').textContent;
+  function openPopupFocusImage(cardImg, cardTitle) {
+    console.log('OPEN')
+    variables.focusImage.src = cardImg.src;
+    variables.focusImage.alt = cardImg.alt;
+    variables.popupFocusImage.querySelector('.focus-img__caption').textContent = cardTitle;
     _openPopup(variables.popupFocusImage);
   }
 

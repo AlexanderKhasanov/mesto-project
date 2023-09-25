@@ -70,7 +70,7 @@ export default class Api {
   deleteLikePost(id) {
     return fetch(`${this._baseUrl}/cards/likes/${id}`, {
       method: 'DELETE',
-      hheaders: this._headers
+      headers: this._headers
     })
     .then(this._getResposeData);
   }

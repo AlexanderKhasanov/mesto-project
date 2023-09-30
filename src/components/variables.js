@@ -53,6 +53,10 @@ export const variables = (function() {
 
   const baseUrl = 'https://nomoreparties.co/v1/plus-cohort-28';
   const token = '09266f70-d3b4-4484-a640-19b16aad419c';
+  const headers = {
+    authorization: token,
+    'Content-Type': 'application/json'
+}
 
   return {
     page,
@@ -100,6 +104,6 @@ export const variables = (function() {
     popupErrorInfo,
 
     baseUrl,
-    token,
+    headers
   }
 }());

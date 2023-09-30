@@ -15,6 +15,11 @@ import { utils } from '../components/utils.js';
 import Card from '../components/card.js';
 
 import Section from '../section.js';
+import Popup from '../components/popup.js'
+
+import PopupWithImage from '../components/popupWithImage.js';
+
+import PopupError from '../components/popupError.js';
 
 
 // Открытие модальных окон

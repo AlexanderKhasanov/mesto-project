@@ -1,6 +1,6 @@
 import { variables } from "./variables.js";
 import { modal } from "./modal.js";
-import { api } from "./api.js";
+import Api from "./api.js";
 import { utils } from "./utils.js";
 
 export const post = (function () {
@@ -12,7 +12,7 @@ export const post = (function () {
 
   function _deletePost() {
     const post = this.target.closest('.posts__item');
-    api.deletePost(post._id)
+    Api.deletePost(post._id)
       .then(() => {
         post.remove();
       })
@@ -28,7 +28,7 @@ export const post = (function () {
   function _likePost(evt) {
     const post = evt.target.closest('.posts__item');
     if (!evt.target.classList.contains('post__like_active')) {
-      api.likePost(post._id)
+      Api.likePost(post._id)
       .then(data => {
         evt.target.classList.add('post__like_active');
         post.querySelector('.post__like-count').textContent = data.likes.length;
@@ -41,7 +41,7 @@ export const post = (function () {
       });
     }
     else {
-      api.deleteLikePost(post._id)
+      Api.deleteLikePost(post._id)
       .then(data => {
         evt.target.classList.remove('post__like_active');
         post.querySelector('.post__like-count').textContent = data.likes.length;

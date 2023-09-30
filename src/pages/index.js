@@ -8,7 +8,7 @@ import { post } from '../components/post.js';
 
 import { validate } from '../components/validate.js';
 
-import { api } from '../components/api.js';
+import Api from '../components/api.js';
 
 import { utils } from '../components/utils.js';
 
@@ -23,7 +23,7 @@ variables.postContainer.addEventListener('click', post.setPostsListeners);
 // Валидация форм
 validate.enableValidation(variables.settingsForms);
 
-api.getDataForPage()
+Api.getDataForPage()
   .then(data => {
     const [userData, PostsData] = data;
     utils.setUserInfo(userData);

@@ -1,6 +1,6 @@
 // import { variables } from "./variables.js";
 
-export class Api {
+export default class Api {
   constructor(baseUrl, headers) {
     this._baseUrl = baseUrl;
     this._headers = headers;
@@ -73,6 +73,6 @@ export class Api {
     .then(this._getResposeData);
   }
   getDataForPage() {
-  return Promise.all([_getUserInfo(), _getPosts()]);
+  return Promise.all([this.getUserInfo(), this.getPosts()]);
 }
 }

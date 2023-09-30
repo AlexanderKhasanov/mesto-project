@@ -1,6 +1,6 @@
 import { variables } from "./variables.js";
 import { utils } from "./utils.js";
-import { api } from "./api.js";
+import Api from "./api.js";
 import { post } from "./post.js";
 
 export const modal = (function(){
@@ -132,7 +132,7 @@ export const modal = (function(){
   function submitEditProfileForm(evt) {
     evt.preventDefault();
     _editTextSubmitButton(variables.btnSubmitEditProfileForm, 'Сохранение...');
-    api.changeUserInfo({
+    Api.changeUserInfo({
       name: variables.formEditProfile.username.value,
       about: variables.formEditProfile.user_info.value,
     })
@@ -153,7 +153,7 @@ export const modal = (function(){
   function submitAddNewPost(evt) {
     evt.preventDefault();
     _editTextSubmitButton(variables.btnSubmitAddPostForm, 'Загрузка поста...');
-    api.addNewPost({
+    Api.addNewPost({
       name: variables.formAddPost.post_name.value,
       link: variables.formAddPost.post_url.value,
     })
@@ -175,7 +175,7 @@ export const modal = (function(){
   function submitEditAvatarForm(evt) {
     evt.preventDefault();
     _editTextSubmitButton(variables.btnSubmitEditAvatarForm, 'Сохранение...');
-    api.changeUserAvatar({
+    Api.changeUserAvatar({
       avatar: variables.formEditAvatar.avatar_url.value
     })
       .then(data => {

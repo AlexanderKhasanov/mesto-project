@@ -1,5 +1,3 @@
-// import { variables } from "./variables.js";
-
 export default class Api {
   constructor(baseUrl, headers) {
     this._baseUrl = baseUrl;
@@ -20,11 +18,12 @@ export default class Api {
   }
 
   getPosts() {
-    return fetch(`${this.baseUrl}/cards`, {
+    return fetch(`${this._baseUrl}/cards`, {
       headers: this._headers
     })
       .then(this._getResposeData);
   }
+
   changeUserInfo(newUserInfo) {
     return fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
@@ -51,6 +50,7 @@ export default class Api {
     })
       .then(this._getResposeData);
   }
+
   deletePost(id) {
     return fetch(`${this._baseUrl}/cards/${id}`, {
       method: 'DELETE',
@@ -58,6 +58,7 @@ export default class Api {
     })
       .then(this._getResposeData);
   }
+
   likePost(id) {
     return fetch(`${this._baseUrl}/cards/likes/${id}`, {
       method: 'PUT',
@@ -65,6 +66,7 @@ export default class Api {
     })
       .then(this._getResposeData);
   }
+
   deleteLikePost(id) {
     return fetch(`${this._baseUrl}/cards/likes/${id}`, {
       method: 'DELETE',
@@ -72,7 +74,8 @@ export default class Api {
     })
     .then(this._getResposeData);
   }
+
   getDataForPage() {
-  return Promise.all([this.getUserInfo(), this.getPosts()]);
-}
+    return Promise.all([this.getUserInfo(), this.getPosts()]);
+  }
 }

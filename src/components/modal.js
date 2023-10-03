@@ -2,6 +2,8 @@ import { variables } from "./variables.js";
 import { utils } from "./utils.js";
 import Api from "./api.js";
 import post from "./card.js";
+import UserInfo from "./userInfo.js";
+import { data } from "autoprefixer";
 
 export const modal = (function(){
   let _submitButtonHandler = null;
@@ -73,6 +75,11 @@ export const modal = (function(){
   function openPopupEditProfile() {
     utils.resetForm(variables.formEditProfile, variables.settingsForms);
     _setUserInfoInForm(variables.formEditProfile);
+    // UserInfo.getUserInfo()
+    // .then(data =>
+    //   form.username.value = data.name,
+    //   form.user_info.value = data.about);
+
     utils.toggleButtonState(
       variables.inputEditProfile,
       variables.btnSubmitEditProfileForm,
@@ -173,6 +180,7 @@ export const modal = (function(){
       .finally(() => setTimeout(_editTextSubmitButton, _timeoutEditButtonText, variables.btnSubmitAddPostForm, 'Создать'));
   }
 
+  //сохранение формы измененеия аватара
   function submitEditAvatarForm(evt) {
     evt.preventDefault();
     _editTextSubmitButton(variables.btnSubmitEditAvatarForm, 'Сохранение...');

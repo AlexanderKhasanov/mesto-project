@@ -14,12 +14,14 @@ import { utils } from '../components/utils.js';
 
 import Card from '../components/card.js';
 
-import Section from '../section.js';
+import Section from '../components/section.js';
 import Popup from '../components/popup.js'
 
 import PopupWithImage from '../components/popupWithImage.js';
 
 import PopupError from '../components/popupError.js';
+
+import UserInfo from '../components/userInfo.js';
 
 
 // Открытие модальных окон
@@ -55,11 +57,11 @@ const api = new Api(variables.baseUrl, variables.headers);
 const cardTemplate = '#post-template';
 const postContainer = '.posts__posts-list';
 
-function handleLiked(card) {
-  return card.isLiked()
-    ? api.deleteLikePost(card.getCardId())
-    : api.likePost(card.getCardId());
-}
+// function handleLiked(card) {
+//   return card.isLiked()
+//     ? api.deleteLikePost(card.getCardId())
+//     : api.likePost(card.getCardId());
+// }
 
 api.getDataForPage()
   .then(data => {
@@ -82,6 +84,10 @@ api.getDataForPage()
         cardsSection.setItem(newCard.createCard());
       }
     }, postContainer);
+    const userProfileInfo = new UserInfo(variables.profileName, variables.profileAbout, variables.profileAvatar);
+    userProfileInfo.setUserInfo(userData);
+    userProfileInfo.setUserAvatar(userData.avatar);
+
 
     cardsSection.renderItems();
     utils.successfulLoadPage();

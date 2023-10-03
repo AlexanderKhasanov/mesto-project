@@ -21,7 +21,7 @@ import PopupWithImage from '../components/popupWithImage.js';
 
 import PopupError from '../components/popupError.js';
 
-import UserInfo from '../components/userInfo.js';
+import FormValidator from '../components/formValidator.js';
 
 
 // Открытие модальных окон
@@ -32,7 +32,11 @@ variables.btnEditAvatar.addEventListener('click', modal.openPopupEditAvatar);
 //variables.postContainer.addEventListener('click', post.setPostsListeners);
 
 // Валидация форм
-validate.enableValidation(variables.settingsForms);
+//validate.enableValidation(variables.settingsForms);
+
+const formAddPostValidator = new FormValidator(variables.settingsForms, variables.formAddPost);
+formAddPostValidator.enableValidation();
+
 /*
 api.getDataForPage()
   .then(data => {

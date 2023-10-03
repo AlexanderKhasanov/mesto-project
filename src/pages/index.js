@@ -4,8 +4,6 @@ import { modal } from '../components/modal.js';
 
 import { variables } from '../components/variables.js';
 
-//import { post } from '../components/post.js';
-
 import { validate } from '../components/validate.js';
 
 import Api from '../components/api.js';
@@ -17,8 +15,8 @@ import Card from '../components/card.js';
 import Section from '../components/section.js';
 import Popup from '../components/popup.js'
 
+import PopupWithConfirmation from '../components/popupWithConfirmation.js';
 import PopupWithImage from '../components/popupWithImage.js';
-
 import PopupError from '../components/popupError.js';
 
 import FormValidator from '../components/formValidator.js';
@@ -56,17 +54,34 @@ api.getDataForPage()
   });
 */
 
-const api = new Api(variables.baseUrl, variables.headers);
-
 const cardTemplate = '#post-template';
 const postContainer = '.posts__posts-list';
 
-// function handleLiked(card) {
-//   return card.isLiked()
-//     ? api.deleteLikePost(card.getCardId())
-//     : api.likePost(card.getCardId());
-// }
+const popupWithConfirmationSelector = '#popup_confirmation-delete';
+const popupWithImageSelector = '#popup_focus-img';
+const popupErrorSelector = '#popup_error';
 
+const api = new Api(variables.baseUrl, variables.headers);
+
+const popupWithImage = new PopupWithImage(popupWithImageSelector);
+const popupError = new PopupError(popupErrorSelector);
+const popupWithConfirmation = new PopupWithConfirmation(
+  popupWithConfirmationSelector,
+  {
+    action: (card) => {
+      api.deletePost(card.getCardId())
+        .then(() => {
+          card.deleteCard();
+        })
+        .catch(err => {
+          popupError.open(
+            `Во время удаления поста возникла ошибка (код ${err.status})`
+          );
+        })
+        .finally(() => popupWithConfirmation.close());
+    }
+  }
+);
 
 api.getDataForPage()
   .then(data => {
@@ -77,13 +92,13 @@ api.getDataForPage()
         const currentUserId = userData._id;
         const newCard = new Card(item, currentUserId, cardTemplate,
           {
-            handleClick: modal.openPopupFocusImage,
+            handleClick: popupWithImage.open,
             handleLiked: () => {
               return newCard.isLiked()
                 ? api.deleteLikePost(newCard.getCardId())
                 : api.likePost(newCard.getCardId());
             },
-            handleDelete: () => api.deletePost(newCard.getCardId()),
+            handleDelete: () => popupWithConfirmation.open(newCard),
           }
         );
         cardsSection.setItem(newCard.createCard());

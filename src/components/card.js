@@ -5,7 +5,12 @@ import { utils } from "./utils.js";
 
 /// TODO: поменять работу с api на новый класс Api
 export default class Card  {
-  constructor({_id, name, link, owner, likes}, currentUserId, templateSelector, {handleClick, handleLiked, handleDelete}) {
+  constructor(
+    {_id, name, link, owner, likes},
+    currentUserId,
+    templateSelector,
+    {handleClick, handleLiked, handleDelete, handleError}
+  ) {
     this._id = _id;
     this._name = name;
     this._link  = link;
@@ -19,7 +24,7 @@ export default class Card  {
     this._handleClick = handleClick;
     this._handleApiLiked = handleLiked;
     this._handleApiDelete = handleDelete;
-
+    this._handleError = handleError
   }
 
   _getElement() {
@@ -63,8 +68,8 @@ export default class Card  {
     this._cardImg.addEventListener('click', () => this._handleClick(this._cardImg, this._name));
     this._cardLikeBtn.addEventListener('click', this._likeCard.bind(this));
     // При реализации окна подтверждения удаления понадобится
-    //this._cardDeleteBtn.addEventListener('click', this._handleApiDelete)
-    this._cardDeleteBtn.addEventListener('click', () => this._deleteCard())
+    this._cardDeleteBtn.addEventListener('click', this._handleApiDelete)
+    //this._cardDeleteBtn.addEventListener('click', () => this._deleteCard())
   }
 
   isLiked() {

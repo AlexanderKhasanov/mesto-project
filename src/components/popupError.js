@@ -5,11 +5,7 @@ export default class PopupError extends Popup {
     super(selector);
     this._errorInfo = this._popup.querySelector('.popup__error-info');
     this._timeoutClosePopup = timeoutClosePopup;
-    //this._handleClickClose = null;
-  }
-
-  _handleClickClose() {
-
+    this._handleClickClose = null;
   }
 
   open(errorInfo) {

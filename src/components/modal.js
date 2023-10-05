@@ -79,6 +79,11 @@ export const modal = (function(){
     // .then(data =>
     //   form.username.value = data.name,
     //   form.user_info.value = data.about);
+    const UserPopupInfo = new UserInfo (inputEditProfile.username, inputEditProfile.user_info);
+    UserPopupInfo.setUserInfo({
+      name: profileName,
+      about: profileAbout
+    })
 
     utils.toggleButtonState(
       variables.inputEditProfile,

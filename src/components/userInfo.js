@@ -1,67 +1,58 @@
-import { construct } from "core-js/fn/reflect";
-import Api from "./api";
-import PopupError from "./popupError";
+import { modal } from "./modal";
+import { variables } from "./variables";
 
 export default class UserInfo {
-  constructor(userNameSelector, userAboutSelector, userAvatarSelector, { handleUserInfo }) {
-    this._name = document.querySelector(userNameSelector);
-    this._about = document.querySelector(userAboutSelector);
-    this._avatar = document.querySelector(userAvatarSelector);
-    this._handleUserInfo = handleUserInfo;
+  constructor(nameSelectorELement, aboutSelectorELement) {
+    this._name = nameSelectorELement;
+    this._about = aboutSelectorELement;
+    this._avatar = document.querySelector('.profile__avatar');
+    this._id = id;
+    // this._handleUserInfo = handleUserInfo;
     // this._api = api;
   }
-  getUserInfoFromApi() {
-    this._handleUserInfo();
 
-    // this._api()
-    // .then(data => {
-    //   this.name = data.name,
-    //   this.about = data.about,
-    //   this.avatar = data.avatar,
-    //   this.id = data.id
-    // })
+  //считаю, что метод getUserInfoFromApi и не нужен, потому что при загрузке страницы мы берем данные из промиса
+  // достаточно getUserInfo, который возвращает берет данные со входа/промиса
+  //а catch и finally лучше поставить там, где происходит непосредственно вызов api
+  //(могу ошибаться)
+  getUserInfoFromApi() {
+    this._api()
+    .then(data => {
+      this._name.textContent = data.name,
+      this._about.textContent = data.about,
+      this._avatar.src = data.avatar,
+      this._id = data.id
+      // return data
+    })
+    .catch(err => {
+      modal.openPopupError(
+        `Ошибка загрузки информации пользователя (код ${err.status})`
+      );
+    })
+    .finally(() =>
+    modal.closePopup(variables.popupConfirmationDelete)
+    );
   }
 
-  // getUserInfoFromPage() { }
+  //получаем данные
+  getUserInfo(data) {
+    return {
+      name: data.name,
+      about: data.about,
+      avatar: data.avatar
+    }
+  }
 
-  // //исп при загрузке стр и при открытии профиля
-  // setUserInfo({ name, about }) {
-  //   this._userNameSelector.textContent = name;
-  //   this._userAboutSelector.textContent = about;
-  // }
+  //для вставки в инпуты
+  getUserInfoFromPage({name, about}) {
+    this._name.textContent = name.value;
+    this._about.textContent = about.value;
+  }
 
-  // setUserAvatar(avatar) {
-  //   this._userAvatarSelector.src = avatar;
-  // }
-
-  // //возвращает объект с данными пользователя.
-  // //Данные для этого метода нужно получать от методов класса Api —
-  // //подумайте над тем, как внедрить метод класса Api в getUserInfo.
-  // //Когда данные пользователя нужно будет подставить в форму при открытии — метод вам пригодится.
-
-
-
-  // getUserInf o api() {
-  //   this._handleUserInfo
-
-
-
-  //   Api.getUserInfo()
-  //     .then(data => {
-  //       this._name = data.name
-  //       this._about = data.about
-  //       this._avatar = data.avatar
-  //       return data //не надо
-  //     })
-  //     .catch //см card handle open из кл PopupError;
-  // }
-
-  // getUserInfoFromApi() { } //при загрузке страницы, нужно поле id, всегда вызывать после созд класса
-  // // но без сильной привязки
-  // //name, about
-  // getUserInfoFromPage() { } //для открытия модального окна
-  // return
-  // constructor
-  // getUserId() { } //для отд получения айди
-  // return this.id
+  //добавляем данные в элементы по селекторам
+  setUserInfo({name, about, avatar = undefined}) {
+    this._name.textContent = name;
+    this._about.textContent = about;
+    this._avatar.src = avatar;
+  }
 }

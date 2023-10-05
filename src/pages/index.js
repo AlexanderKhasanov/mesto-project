@@ -85,18 +85,18 @@ api.getDataForPage()
         cardsSection.setItem(newCard.createCard());
       }
     }, postContainer);
-    const userProfileInfo = new UserInfo(
-      variables.profileName,
-      variables.profileAbout,
-      variables.profileAvatar,
-      {
-        handleUserInfo: () => {}
-        // ,
-        // api: Api.getDataForPage()
-      });
-
-
+    const userProfileInfo = new UserInfo(profileName, profileAbout);
+      const userDataFromApi = userProfileInfo.getUserInfo(userData);
+      userProfileInfo.setUserInfo(userDataFromApi);
 
     cardsSection.renderItems();
     utils.successfulLoadPage();
   })
+  .catch(err => {
+    modal.openPopupError(
+      `Ошибка загрузки (код ${err.status})`
+    );
+  })
+  .finally(() =>
+  modal.closePopup(variables.popupConfirmationDelete)
+  );

@@ -63,6 +63,7 @@ const postContainer = '.posts__posts-list';
 //     : api.likePost(card.getCardId());
 // }
 
+
 api.getDataForPage()
   .then(data => {
     const [userData, cardsData] = data;
@@ -84,9 +85,16 @@ api.getDataForPage()
         cardsSection.setItem(newCard.createCard());
       }
     }, postContainer);
-    const userProfileInfo = new UserInfo(variables.profileName, variables.profileAbout, variables.profileAvatar);
-    userProfileInfo.setUserInfo(userData);
-    userProfileInfo.setUserAvatar(userData.avatar);
+    const userProfileInfo = new UserInfo(
+      variables.profileName,
+      variables.profileAbout,
+      variables.profileAvatar,
+      {
+        handleUserInfo: () => {}
+        // ,
+        // api: Api.getDataForPage()
+      });
+
 
 
     cardsSection.renderItems();

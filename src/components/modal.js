@@ -2,10 +2,14 @@ import { variables } from "./variables.js";
 import { utils } from "./utils.js";
 import Api from "./api.js";
 import post from "./card.js";
+<<<<<<< HEAD
 import UserInfo from "./userInfo.js";
 import { data } from "autoprefixer";
+=======
+import PopupWithForm from "./popupWithForm.js";
+>>>>>>> f996dc1 (class changed)
 
-export const modal = (function(){
+export const modal = (function () {
   let _submitButtonHandler = null;
   let _currentButton = null;
   const _timeoutEditButtonText = 500;
@@ -23,7 +27,7 @@ export const modal = (function(){
   }
 
   // Открытие модального окна
-  function _openPopup(popup, submitBtn=null, handlerButton=null) {
+  function _openPopup(popup, submitBtn = null, handlerButton = null) {
     popup.classList.add('popup_opened');
     _setPopupEventListeners(popup, submitBtn, handlerButton);
   }
@@ -37,14 +41,14 @@ export const modal = (function(){
 
   // Закрытие модального окна по нажатию ESC
   function _closePopupEsc(evt) {
-    if (evt.key === 'Escape'){
+    if (evt.key === 'Escape') {
       const popup = variables.page.querySelector('.popup_opened');
       closePopup(popup);
     }
   }
 
   // Установка слушателей для модальных окон
-  function _setPopupEventListeners(popup, submitBtn=null, handlerButton=null) {
+  function _setPopupEventListeners(popup, submitBtn = null, handlerButton = null) {
     if (popup.id !== 'popup_error') {
       document.addEventListener('keydown', _closePopupEsc);
       popup.addEventListener('click', _closePopupClick)
@@ -71,6 +75,7 @@ export const modal = (function(){
       _deleteEventListener(popup);
   }
 
+<<<<<<< HEAD
   // Открытие модального окна изменения профиля
   function openPopupEditProfile() {
     utils.resetForm(variables.formEditProfile, variables.settingsForms);
@@ -120,6 +125,8 @@ export const modal = (function(){
     _openPopup(variables.popupEditAvatar, _currentButton, _submitButtonHandler);
   }
 
+=======
+>>>>>>> f996dc1 (class changed)
   // Открытие модального окна с увеличенным изображением
   function openPopupFocusImage(cardImg, cardTitle) {
     console.log('OPEN')
@@ -132,7 +139,7 @@ export const modal = (function(){
   function openPopupConfirmationDelete(evt) {
     _submitButtonHandler = post._deletePost.bind(evt);
     _currentButton = variables.btnConfirmationDelete;
-    variables.btnConfirmationDelete.addEventListener('click', _submitButtonHandler, {once: true});
+    variables.btnConfirmationDelete.addEventListener('click', _submitButtonHandler, { once: true });
     _openPopup(variables.popupConfirmationDelete);
   }
 
@@ -141,17 +148,31 @@ export const modal = (function(){
     _openPopup(variables.popupError);
   }
 
+  //форма изменения профиля
+  const editPopupClass = new PopupWithForm(variables.popupEditProfile, submitEditProfileForm);
+
+  // Открытие модального окна изменения профиля
+  function openPopupEditProfile() {
+    utils.resetForm(variables.formEditProfile, variables.settingsForms);
+    _setUserInfoInForm(variables.formEditProfile); //здесь будет userInfo
+    utils.toggleButtonState(
+      variables.inputEditProfile,
+      variables.btnSubmitEditProfileForm,
+      variables.settingsForms
+    );
+    editPopupClass.open();
+  }
+
   // Сохранение измененной информации о пользователе
   function submitEditProfileForm(evt) {
-    evt.preventDefault();
     _editTextSubmitButton(variables.btnSubmitEditProfileForm, 'Сохранение...');
     Api.changeUserInfo({
       name: variables.formEditProfile.username.value,
       about: variables.formEditProfile.user_info.value,
     })
       .then(data => {
-        utils.setUserInfo(data);
-        closePopup(variables.popupEditProfile);
+        utils.setUserInfo(data); //потом сюда поставить кл userInfo
+        editPopupClass.close();
       })
       .catch(err => {
         openPopupError(
@@ -162,9 +183,22 @@ export const modal = (function(){
       .finally(() => setTimeout(_editTextSubmitButton, _timeoutEditButtonText, variables.btnSubmitEditProfileForm, 'Сохранить'));
   }
 
+  //форма добавления поста
+  const addNewPostClass = new PopupWithForm(variables.popupAddPost, submitAddNewPost);
+
+  // Открытие модального окна добавления поста
+  function openPopupAddPost() {
+    utils.resetForm(variables.formAddPost, variables.settingsForms);
+    utils.toggleButtonState(
+      variables.inputListAddPost,
+      variables.btnSubmitAddPostForm,
+      variables.settingsForms
+    );
+    addNewPostClass.open();
+  }
+
   // Добавления поста через форму
   function submitAddNewPost(evt) {
-    evt.preventDefault();
     _editTextSubmitButton(variables.btnSubmitAddPostForm, 'Загрузка поста...');
     Api.addNewPost({
       name: variables.formAddPost.post_name.value,
@@ -174,7 +208,7 @@ export const modal = (function(){
         variables.postContainer.prepend(
           post.createPost(data)
         );
-        closePopup(variables.popupAddPost);
+        addNewPostClass.close();
       })
       .catch(err => {
         openPopupError(
@@ -185,16 +219,32 @@ export const modal = (function(){
       .finally(() => setTimeout(_editTextSubmitButton, _timeoutEditButtonText, variables.btnSubmitAddPostForm, 'Создать'));
   }
 
+<<<<<<< HEAD
   //сохранение формы измененеия аватара
+=======
+  //форма изменения аватара
+  const editAvatarClass = new PopupWithForm(variables.popupEditAvatar, submitEditAvatarForm);
+
+  function openPopupEditAvatar() {
+    utils.resetForm(variables.formEditAvatar, variables.settingsForms);
+    utils.toggleButtonState(
+      variables.inputEditAvatar,
+      variables.btnSubmitEditAvatarForm,
+      variables.settingsForms
+    );
+    editAvatarClass.open();
+  }
+
+  //изменение аватара через форму
+>>>>>>> f996dc1 (class changed)
   function submitEditAvatarForm(evt) {
-    evt.preventDefault();
     _editTextSubmitButton(variables.btnSubmitEditAvatarForm, 'Сохранение...');
     Api.changeUserAvatar({
       avatar: variables.formEditAvatar.avatar_url.value
     })
       .then(data => {
         utils.setUserAvatar(data.avatar);
-        closePopup(variables.popupEditAvatar);
+        editAvatarClass.close()
       })
       .catch(err => {
         openPopupError(

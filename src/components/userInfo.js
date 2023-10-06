@@ -2,11 +2,10 @@ import { modal } from "./modal";
 import { variables } from "./variables";
 
 export default class UserInfo {
-  constructor(nameSelector, aboutSelector, {handleGetUserInfoFromApi}) {
-    this._name = document.querySelector(`${nameSelector}`);
-    this._about = document.querySelector(`${aboutSelector}`);
-    this._avatar = document.querySelector('.profile__avatar');
-    this._id = id;
+  constructor(nameSelector, aboutSelector, avatarSelector, {handleGetUserInfoFromApi}) {
+    this._name = document.querySelector(nameSelector);
+    this._about = document.querySelector(aboutSelector);
+    this._avatar = document.querySelector(avatarSelector);
     this._handleGetUserInfoFromApi = handleGetUserInfoFromApi;
   }
 

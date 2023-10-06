@@ -1,7 +1,7 @@
 import Popup from "./popup.js";
 
 export default class PopupWithForm extends Popup {
-  constructor(popupSelector, formSubmitHandler) {
+  constructor(popupSelector, {formSubmitHandler}) {
     super(popupSelector);
     this._formSubmitHandler = formSubmitHandler; //В этом колбэке содержится метод класса Api.
     this._form = this._popup.querySelector('.form');

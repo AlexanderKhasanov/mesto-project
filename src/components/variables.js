@@ -1,6 +1,5 @@
 export const variables = (function() {
   const settingsForms = {
-    formSelector: '.form',
     inputSelector: '.form__item',
     submitButtonSelector: '.form__send-btn',
     inactiveButtonClass: 'form__send-btn_disabled',
@@ -53,6 +52,26 @@ export const variables = (function() {
 
   const baseUrl = 'https://nomoreparties.co/v1/plus-cohort-28';
   const token = '09266f70-d3b4-4484-a640-19b16aad419c';
+  const headers = {
+    authorization: token,
+    'Content-Type': 'application/json'
+  }
+
+  const cardContainerSelector = '.posts__posts-list';
+  const cardTemplate = '#post-template';
+
+  const profileNameSelector = '.profile__name';
+  const profileAboutSelector = '.profile__about';
+  const profileAvatarSelector = '.profile__avatar';
+
+  const popupErrorSelector = '#popup_error';
+  const popupWithImageSelector = '#popup_focus-img';
+  const popupWithConfirmationSelector = '#popup_confirmation-delete';
+  const popupEditProfileSelector = '#popup_edit-profile';
+  const popupAddPostSelector = '#popup_add-post';
+  const popupEditAvatarSelector = '#popup_edit-avatar';
+
+  const timeoutEditButtonText = 500;
 
   return {
     page,
@@ -100,6 +119,22 @@ export const variables = (function() {
     popupErrorInfo,
 
     baseUrl,
-    token,
+    headers,
+
+    cardContainerSelector,
+    cardTemplate,
+
+    profileNameSelector,
+    profileAboutSelector,
+    profileAvatarSelector,
+
+    popupErrorSelector,
+    popupWithImageSelector,
+    popupWithConfirmationSelector,
+    popupEditProfileSelector,
+    popupAddPostSelector,
+    popupEditAvatarSelector,
+
+    timeoutEditButtonText,
   }
 }());

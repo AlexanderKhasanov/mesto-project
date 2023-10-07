@@ -1,102 +1,81 @@
-import { variables } from "./variables.js";
+export default class Api {
+  constructor(baseUrl, headers) {
+    this._baseUrl = baseUrl;
+    this._headers = headers;
+  }
 
-export const api = (function() {
-  function _getResposeData(res) {
+  _getResposeData(res) {
     if (res.ok)
       return res.json();
     return Promise.reject(res);
   }
 
-  function _getUserInfo() {
-    return fetch(`${variables.baseUrl}/users/me`, {
-      headers: {
-        authorization: variables.token
-      }
-    }).then(_getResposeData);
-  }
-
-  function _getPosts() {
-    return fetch(`${variables.baseUrl}/cards`, {
-      headers: {
-        authorization: variables.token
-      }
+  getUserInfo() {
+    return fetch(`${this._baseUrl}/users/me`, {
+      headers: this._headers
     })
-      .then(_getResposeData);
+      .then(this._getResposeData);
   }
 
-  function changeUserInfo(newUserInfo) {
-    return fetch(`${variables.baseUrl}/users/me`, {
+  getCards() {
+    return fetch(`${this._baseUrl}/cards`, {
+      headers: this._headers
+    })
+      .then(this._getResposeData);
+  }
+
+  changeUserInfo(newUserInfo) {
+    return fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
-      headers: {
-        authorization: variables.token,
-        'Content-Type': 'application/json'
-      },
+      headers: this._headers,
       body: JSON.stringify(newUserInfo)
     })
-      .then(_getResposeData);
+      .then(this._getResposeData);
   }
 
-  function changeUserAvatar(newUserAvatar) {
-    return fetch(`${variables.baseUrl}/users/me/avatar`, {
+  changeUserAvatar(newUserAvatar) {
+    return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: 'PATCH',
-      headers: {
-        authorization: variables.token,
-        'Content-Type': 'application/json'
-      },
+      headers: this._headers,
       body: JSON.stringify(newUserAvatar)
     })
-      .then(_getResposeData);
+      .then(this._getResposeData);
   }
 
-  function addNewPost(newPost) {
-    return fetch(`${variables.baseUrl}/cards`, {
+  addNewCard(newCard) {
+    return fetch(`${this._baseUrl}/cards`, {
       method: 'POST',
-      headers: {
-        authorization: variables.token,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(newPost)
-    }).then(_getResposeData);
+      headers: this._headers,
+      body: JSON.stringify(newCard)
+    })
+      .then(this._getResposeData);
   }
 
-  function deletePost(id) {
-    return fetch(`${variables.baseUrl}/cards/${id}`, {
+  deleteCard(id) {
+    return fetch(`${this._baseUrl}/cards/${id}`, {
       method: 'DELETE',
-      headers: {
-        authorization: variables.token
-      }
-    }).then(_getResposeData);
+      headers: this._headers
+    })
+      .then(this._getResposeData);
   }
 
-  function likePost(id) {
-    return fetch(`${variables.baseUrl}/cards/likes/${id}`, {
+  likeCard(id) {
+    return fetch(`${this._baseUrl}/cards/likes/${id}`, {
       method: 'PUT',
-      headers: {
-        authorization: variables.token,
-      }
-    }).then(_getResposeData);
+      headers: this._headers
+    })
+      .then(this._getResposeData);
   }
 
-  function deleteLikePost(id) {
-    return fetch(`${variables.baseUrl}/cards/likes/${id}`, {
+  deleteLikeCard(id) {
+    return fetch(`${this._baseUrl}/cards/likes/${id}`, {
       method: 'DELETE',
-      headers: {
-        authorization: variables.token,
-      }
-    }).then(_getResposeData);
+      headers: this._headers
+    })
+    .then(this._getResposeData);
   }
 
-  function getDataForPage() {
-    return Promise.all([_getUserInfo(), _getPosts()]);
+  getDataForPage() {
+    return Promise.all([this.getUserInfo(), this.getCards()]);
   }
-
-  return {
-    getDataForPage,
-    changeUserInfo,
-    changeUserAvatar,
-    addNewPost,
-    deletePost,
-    likePost,
-    deleteLikePost,
-  }
-}());
+}

@@ -1,75 +1,68 @@
 import './index.css';
 
-import { modal } from '../components/modal.js';
-
-import { variables } from '../components/variables.js';
-
-import { validate } from '../components/validate.js';
-
 import Api from '../components/api.js';
-
-import { utils } from '../components/utils.js';
-
 import Card from '../components/card.js';
-
 import Section from '../components/section.js';
-import Popup from '../components/popup.js'
-
-import PopupWithConfirmation from '../components/popupWithConfirmation.js';
 import PopupWithImage from '../components/popupWithImage.js';
+import PopupWithForm from '../components/popupWithForm.js';
+import PopupWithConfirmation from '../components/popupWithConfirmation.js';
 import PopupError from '../components/popupError.js';
-
+import UserInfo from '../components/userInfo.js';
 import FormValidator from '../components/formValidator.js';
 
+import { utils } from '../components/utils.js';
+import { variables } from '../components/variables.js';
 
-// Открытие модальных окон
-variables.btnProfileEdit.addEventListener('click', modal.openPopupEditProfile);
-variables.btnAddPost.addEventListener('click', modal.openPopupAddPost);
-variables.btnEditAvatar.addEventListener('click', modal.openPopupEditAvatar);
+const api = new Api(variables.baseUrl, variables.headers);
 
-//variables.postContainer.addEventListener('click', post.setPostsListeners);
+const popupError = new PopupError(variables.popupErrorSelector);
 
-// Валидация форм
-//validate.enableValidation(variables.settingsForms);
+const cardsContainer = new Section({
+  renderer: (item) => {
+    const card = new Card(item, variables.cardTemplate, userInfo.getUserId(), {
+      handleClick: popupWithImage.open,
+      handleLiked: () => {
+        return card.isLiked()
+          ? api.deleteLikeCard(card.getCardId())
+          : api.likeCard(card.getCardId());
+      },
+      handleDelete: () => popupWithConfirmation.open(card),
+      handleError: (errorMessage) => popupError.open(errorMessage),
+    });
+    return card.createCard();
+  }
+}, variables.cardContainerSelector);
 
-const formAddPostValidator = new FormValidator(variables.settingsForms, variables.formAddPost);
-formAddPostValidator.enableValidation();
+const userInfo = new UserInfo(
+  variables.profileNameSelector,
+  variables.profileAboutSelector,
+  variables.profileAvatarSelector,
+  {
+    handleGetUserInfoFromApi: api.getUserInfo.bind(api),
+    handleError: (errorMessage) => popupError.open(errorMessage),
+  }
+);
+userInfo.getUserInfoFromApi();
 
-/*
-api.getDataForPage()
+api.getCards()
   .then(data => {
-    const [userData, PostsData] = data;
-    utils.setUserInfo(userData);
-    utils.setUserAvatar(userData.avatar);
-    utils.currentUserId = userData._id;
-    post.renderPosts(PostsData);
+    cardsContainer.renderItems(data);
     utils.successfulLoadPage();
   })
   .catch(err => {
     utils.failedLoadPage();
-    modal.openPopupError(
-      `Во время загурзки страницы возникла ошибка (код ${err.status})`
-    );
-    setTimeout(modal.closePopup, 3000, variables.popupError);
-  });
-*/
+    popupError.open(
+      `Ошибка загрузки карточек (код ${err.status})`
+    )
+  })
 
-const cardTemplate = '#post-template';
-const postContainer = '.posts__posts-list';
+const popupWithImage = new PopupWithImage(variables.popupWithImageSelector);
 
-const popupWithConfirmationSelector = '#popup_confirmation-delete';
-const popupWithImageSelector = '#popup_focus-img';
-const popupErrorSelector = '#popup_error';
-
-const api = new Api(variables.baseUrl, variables.headers);
-
-const popupWithImage = new PopupWithImage(popupWithImageSelector);
-const popupError = new PopupError(popupErrorSelector);
 const popupWithConfirmation = new PopupWithConfirmation(
-  popupWithConfirmationSelector,
+  variables.popupWithConfirmationSelector,
   {
     action: (card) => {
-      api.deletePost(card.getCardId())
+      api.deleteCard(card.getCardId())
         .then(() => {
           card.deleteCard();
         })
@@ -83,39 +76,100 @@ const popupWithConfirmation = new PopupWithConfirmation(
   }
 );
 
-api.getDataForPage()
-  .then(data => {
-    const [userData, cardsData] = data;
-    const cardsSection = new Section({
-      items: cardsData,
-      renderer: (item) => {
-        const currentUserId = userData._id;
-        const newCard = new Card(item, currentUserId, cardTemplate,
-          {
-            handleClick: popupWithImage.open,
-            handleLiked: () => {
-              return newCard.isLiked()
-                ? api.deleteLikePost(newCard.getCardId())
-                : api.likePost(newCard.getCardId());
-            },
-            handleDelete: () => popupWithConfirmation.open(newCard),
-          }
-        );
-        cardsSection.setItem(newCard.createCard());
-      }
-    }, postContainer);
-    const userProfileInfo = new UserInfo(profileName, profileAbout);
-      const userDataFromApi = userProfileInfo.getUserInfo(userData);
-      userProfileInfo.setUserInfo(userDataFromApi);
+const popupAddPost = new PopupWithForm(
+  variables.popupAddPostSelector,
+  {
+    formSubmitHandler: (card) => {
+      popupAddPost.editTextSubmitButton('Загрузка поста...');
+      api.addNewCard(card)
+      .then(data => {
+        cardsContainer.addItem(data);
+        popupAddPost.close();
+      })
+      .catch(err => {
+        popupError.open(
+          `Во время создания поста возникла ошибка (код ${err.status})`
+        )
+      })
+      .finally(() => {
+        setTimeout(
+          popupAddPost.editTextSubmitButton.bind(popupAddPost),
+          variables.timeoutEditButtonText,
+          'Создать'
+        )
+      });
+    }
+  }
+)
 
-    cardsSection.renderItems();
-    utils.successfulLoadPage();
-  })
-  .catch(err => {
-    modal.openPopupError(
-      `Ошибка загрузки (код ${err.status})`
-    );
-  })
-  .finally(() =>
-  modal.closePopup(variables.popupConfirmationDelete)
-  );
+const popupEditProfile = new PopupWithForm(
+  variables.popupEditProfileSelector,
+  {
+    formSubmitHandler: (updateUserInfo) => {
+      popupEditProfile.editTextSubmitButton('Сохранение...')
+      api.changeUserInfo(updateUserInfo)
+        .then(data => {
+          userInfo.setUserInfo(data);
+          popupEditProfile.close();
+        })
+        .catch(err => {
+          popupError.open(
+            `Во время сохранения профиля возникла ошибка (код ${err.status})`
+          )
+        })
+        .finally(() => {
+          setTimeout(
+            popupEditProfile.editTextSubmitButton.bind(popupEditProfile),
+            variables.timeoutEditButtonText,
+            'Сохранить'
+          )
+        });
+    }
+  }
+)
+
+const popupEditAvatar = new PopupWithForm(
+  variables.popupEditAvatarSelector,
+  {
+    formSubmitHandler: (updateUserAvatar) => {
+      popupEditAvatar.editTextSubmitButton('Сохранение...')
+      api.changeUserAvatar(updateUserAvatar)
+        .then(data => {
+          userInfo.setUserAvatar(data.avatar);
+          popupEditAvatar.close();
+        })
+        .catch(err => {
+          popupError.open(
+            `Во время сохранения профиля возникла ошибка (код ${err.status})`
+          )
+        })
+        .finally(() => {
+          setTimeout(
+            popupEditAvatar.editTextSubmitButton.bind(popupEditAvatar),
+            variables.timeoutEditButtonText,
+            'Сохранить'
+          )
+        });
+    }
+  }
+)
+
+// Валидация форм
+const formAddPostValidator = new FormValidator(variables.settingsForms, popupAddPost.getPopupForm());
+formAddPostValidator.enableValidation();
+
+const formEditProfileValidator = new FormValidator(variables.settingsForms, popupEditProfile.getPopupForm());
+formEditProfileValidator.enableValidation();
+
+const formEditAvatarValidator = new FormValidator(variables.settingsForms, popupEditAvatar.getPopupForm());
+formEditAvatarValidator.enableValidation();
+
+
+// Открытие модальных окон
+variables.btnAddPost.addEventListener('click', popupAddPost.open.bind(popupAddPost));
+variables.btnProfileEdit.addEventListener('click', () => {
+  popupEditProfile.setStartInputValues(userInfo.getUserInfoFromPage());
+  formEditProfileValidator.toggleButtonState();
+  popupEditProfile.open();
+});
+variables.btnEditAvatar.addEventListener('click', popupEditAvatar.open.bind(popupEditAvatar));

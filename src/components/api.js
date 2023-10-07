@@ -17,7 +17,7 @@ export default class Api {
       .then(this._getResposeData);
   }
 
-  getPosts() {
+  getCards() {
     return fetch(`${this._baseUrl}/cards`, {
       headers: this._headers
     })
@@ -42,16 +42,16 @@ export default class Api {
       .then(this._getResposeData);
   }
 
-  addNewPost(newPost) {
+  addNewCard(newCard) {
     return fetch(`${this._baseUrl}/cards`, {
       method: 'POST',
       headers: this._headers,
-      body: JSON.stringify(newPost)
+      body: JSON.stringify(newCard)
     })
       .then(this._getResposeData);
   }
 
-  deletePost(id) {
+  deleteCard(id) {
     return fetch(`${this._baseUrl}/cards/${id}`, {
       method: 'DELETE',
       headers: this._headers
@@ -59,7 +59,7 @@ export default class Api {
       .then(this._getResposeData);
   }
 
-  likePost(id) {
+  likeCard(id) {
     return fetch(`${this._baseUrl}/cards/likes/${id}`, {
       method: 'PUT',
       headers: this._headers
@@ -67,7 +67,7 @@ export default class Api {
       .then(this._getResposeData);
   }
 
-  deleteLikePost(id) {
+  deleteLikeCard(id) {
     return fetch(`${this._baseUrl}/cards/likes/${id}`, {
       method: 'DELETE',
       headers: this._headers
@@ -76,6 +76,6 @@ export default class Api {
   }
 
   getDataForPage() {
-    return Promise.all([this.getUserInfo(), this.getPosts()]);
+    return Promise.all([this.getUserInfo(), this.getCards()]);
   }
 }

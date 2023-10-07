@@ -1,12 +1,20 @@
-import { modal } from "./modal";
 import { variables } from "./variables";
 
 export default class UserInfo {
-  constructor(nameSelector, aboutSelector, avatarSelector, {handleGetUserInfoFromApi}) {
+  constructor(
+    nameSelector,
+    aboutSelector,
+    avatarSelector,
+    {
+      handleGetUserInfoFromApi,
+      handleError,
+    }
+  ) {
     this._name = document.querySelector(nameSelector);
     this._about = document.querySelector(aboutSelector);
     this._avatar = document.querySelector(avatarSelector);
     this._handleGetUserInfoFromApi = handleGetUserInfoFromApi;
+    this._handleError = handleError;
   }
 
   getUserInfoFromApi() {
@@ -15,27 +23,22 @@ export default class UserInfo {
       this._name.textContent = data.name,
       this._about.textContent = data.about,
       this._avatar.src = data.avatar,
-      this._id = data.id
+      this._id = data._id
     })
     .catch(err => {
-      modal.openPopupError(
+      this._handleError(
         `Ошибка загрузки информации пользователя (код ${err.status})`
       );
-    })
-    .finally(() =>
-    modal.closePopup(variables.popupConfirmationDelete)
-    );
+    });
   }
 
-  //для вставки в инпуты
-  getUserInfo() {
+  getUserInfoFromPage() {
     return {
-      name: this._name,
-      about: this._about
+      name: this._name.textContent,
+      about: this._about.textContent,
     }
   }
 
-  //добавляем данные в элементы по селекторам
   setUserInfo({name, about}) {
     this._name.textContent = name;
     this._about.textContent = about;
@@ -43,5 +46,9 @@ export default class UserInfo {
 
   setUserAvatar(avatar) {
     this._avatar.src = avatar;
+  }
+
+  getUserId() {
+    return this._id;
   }
 }

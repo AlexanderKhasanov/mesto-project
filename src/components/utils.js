@@ -53,7 +53,7 @@ export const utils = (function() {
   }
 
   function failedLoadPage() {
-    variables.spinner.classList.remove('spinner_visible');
+    //variables.spinner.classList.remove('spinner_visible');
     variables.page.querySelector('.supportive-content').classList.remove('supportive-content_hidden');
   }
 

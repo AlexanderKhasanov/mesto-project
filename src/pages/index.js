@@ -42,19 +42,21 @@ const userInfo = new UserInfo(
     handleError: (errorMessage) => popupError.open(errorMessage),
   }
 );
-userInfo.getUserInfoFromApi();
 
-api.getCards()
-  .then(data => {
-    cardsContainer.renderItems(data);
-    utils.successfulLoadPage();
-  })
-  .catch(err => {
-    utils.failedLoadPage();
-    popupError.open(
-      `Ошибка загрузки карточек (код ${err.status})`
-    )
-  })
+api.getDataForPage()
+.then(data => {
+  const [userData, postsData] = data;
+  userInfo.setUserInfoFromApi(userData);
+  cardsContainer.renderItems(postsData);
+  utils.successfulLoadPage();
+})
+.catch(err => {
+  utils.failedLoadPage();
+  modal.openPopupError(
+    `Во время загурзки страницы возникла ошибка (код ${err.status})`
+  );
+  setTimeout(modal.closePopup, 3000, variables.popupError);
+});
 
 const popupWithImage = new PopupWithImage(variables.popupWithImageSelector);
 
@@ -65,13 +67,13 @@ const popupWithConfirmation = new PopupWithConfirmation(
       api.deleteCard(card.getCardId())
         .then(() => {
           card.deleteCard();
+          popupWithConfirmation.close()
         })
         .catch(err => {
           popupError.open(
             `Во время удаления поста возникла ошибка (код ${err.status})`
           );
-        })
-        .finally(() => popupWithConfirmation.close());
+        });
     }
   }
 );

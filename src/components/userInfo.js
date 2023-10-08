@@ -20,16 +20,23 @@ export default class UserInfo {
   getUserInfoFromApi() {
     this._handleGetUserInfoFromApi()
     .then(data => {
-      this._name.textContent = data.name,
-      this._about.textContent = data.about,
-      this._avatar.src = data.avatar,
-      this._id = data._id
+      this._name.textContent = data.name;
+      this._about.textContent = data.about;
+      this._avatar.src = data.avatar;
+      this._id = data._id;
     })
     .catch(err => {
       this._handleError(
         `Ошибка загрузки информации пользователя (код ${err.status})`
       );
     });
+  }
+
+  setUserInfoFromApi({name, about, _id, avatar}) {
+    this._name.textContent = name;
+    this._about.textContent = about;
+    this._avatar.src = avatar;
+    this._id = _id;
   }
 
   getUserInfoFromPage() {

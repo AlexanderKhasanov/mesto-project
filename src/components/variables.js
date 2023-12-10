@@ -1,6 +1,5 @@
 export const variables = (function() {
   const settingsForms = {
-    formSelector: '.form',
     inputSelector: '.form__item',
     submitButtonSelector: '.form__send-btn',
     inactiveButtonClass: 'form__send-btn_disabled',
@@ -9,97 +8,64 @@ export const variables = (function() {
   };
 
   const page = document.querySelector('.page');
+  const content = document.querySelector('.content');
+  const spinner = document.querySelector('.spinner');
 
-  const content = page.querySelector('.content');
-
-  const spinner = page.querySelector('.spinner');
-
-  const profile = page.querySelector('.profile');
-  const profileName = profile.querySelector('.profile__name');
-  const profileAbout = profile.querySelector('.profile__about');
-  const profileAvatar = profile.querySelector('.profile__avatar');
-
-  const popupEditProfile = page.querySelector('#popup_edit-profile');
-  const formEditProfile = popupEditProfile.querySelector('.form');
-  const btnSubmitEditProfileForm = popupEditProfile.querySelector('.form__send-btn');
-  const inputEditProfile = Array.from(formEditProfile.querySelectorAll(settingsForms.inputSelector));
-
-  const popupAddPost = page.querySelector('#popup_add-post');
-  const formAddPost = popupAddPost.querySelector('.form');
-  const btnSubmitAddPostForm = popupAddPost.querySelector('.form__send-btn');
-  const inputListAddPost = Array.from(formAddPost.querySelectorAll(settingsForms.inputSelector));
-
-  const popupEditAvatar = page.querySelector('#popup_edit-avatar');
-  const formEditAvatar = popupEditAvatar.querySelector('.form');
-  const btnSubmitEditAvatarForm = popupEditAvatar.querySelector('.form__send-btn');
-  const inputEditAvatar = Array.from(formEditAvatar.querySelectorAll(settingsForms.inputSelector));
-
-  const popupFocusImage = page.querySelector('#popup_focus-img');
-  const focusImage = popupFocusImage.querySelector('.focus-img__image');
-
-  const postContainer = page.querySelector('.posts__posts-list');
-  const postTemplate = page.querySelector('#post-template').content;
-  const postCardTemplate = postTemplate.querySelector('.posts__item');
-
-  const btnProfileEdit = profile.querySelector('.profile__edit-btn');
-  const btnAddPost = profile.querySelector('.profile__add-btn');
-  const btnEditAvatar = profile.querySelector('.profile__edit-avatar-btn');
-
-  const popupConfirmationDelete = page.querySelector('#popup_confirmation-delete');
-  const btnConfirmationDelete = popupConfirmationDelete.querySelector('.form__send-btn');
-
-  const popupError = page.querySelector('#popup_error');
-  const popupErrorInfo = popupError.querySelector('.popup__error-info');
+  const btnProfileEdit = document.querySelector('.profile__edit-btn');
+  const btnAddPost = document.querySelector('.profile__add-btn');
+  const btnEditAvatar = document.querySelector('.profile__edit-avatar-btn');
 
   const baseUrl = 'https://nomoreparties.co/v1/plus-cohort-28';
   const token = '09266f70-d3b4-4484-a640-19b16aad419c';
+  const headers = {
+    authorization: token,
+    'Content-Type': 'application/json'
+  }
+
+  const cardContainerSelector = '.posts__posts-list';
+  const cardTemplate = '#post-template';
+
+  const profileNameSelector = '.profile__name';
+  const profileAboutSelector = '.profile__about';
+  const profileAvatarSelector = '.profile__avatar';
+
+  const popupErrorSelector = '#popup_error';
+  const popupWithImageSelector = '#popup_focus-img';
+  const popupWithConfirmationSelector = '#popup_confirmation-delete';
+  const popupEditProfileSelector = '#popup_edit-profile';
+  const popupAddPostSelector = '#popup_add-post';
+  const popupEditAvatarSelector = '#popup_edit-avatar';
+
+  const timeoutEditButtonText = 500;
 
   return {
     page,
-
     content,
     spinner,
 
-    profile,
+    baseUrl,
+    headers,
 
-    profileName,
-    profileAbout,
-    profileAvatar,
+    cardContainerSelector,
+    cardTemplate,
 
-    popupEditProfile,
-    formEditProfile,
-    btnSubmitEditProfileForm,
-    inputEditProfile,
+    profileNameSelector,
+    profileAboutSelector,
+    profileAvatarSelector,
 
-    popupAddPost,
-    formAddPost,
-    btnSubmitAddPostForm,
-    inputListAddPost,
+    popupErrorSelector,
+    popupWithImageSelector,
+    popupWithConfirmationSelector,
+    popupEditProfileSelector,
+    popupAddPostSelector,
+    popupEditAvatarSelector,
 
-    popupEditAvatar,
-    formEditAvatar,
-    btnSubmitEditAvatarForm,
-    inputEditAvatar,
+    timeoutEditButtonText,
 
-    popupFocusImage,
-    focusImage,
-
-    postContainer,
-    postTemplate,
-    postCardTemplate,
+    settingsForms,
 
     btnProfileEdit,
     btnAddPost,
     btnEditAvatar,
-    settingsForms,
-
-    popupConfirmationDelete,
-    btnConfirmationDelete,
-
-    popupError,
-    popupErrorInfo,
-
-    baseUrl,
-    token,
   }
 }());
